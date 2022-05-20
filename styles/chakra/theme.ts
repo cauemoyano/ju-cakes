@@ -26,6 +26,45 @@ const colors = {
 };
 
 const components = {
+  Button: {
+    baseStyle: {
+      borderRadius: "5px",
+    },
+    /* sizes: {
+        small: {
+          px: 5,
+          h: "50px",
+          fontSize: "20px",
+        },
+      }, */
+    variants: {
+      primary: {
+        bg: "primary.dark",
+        color: "light.main",
+      },
+      primaryInverted: {
+        bg: "transparent",
+        color: "primary.dark",
+      },
+      primaryGhost: {
+        bg: "transparent",
+        border: "1px solid",
+        borderColor: "primary.dark",
+        color: "primary.dark",
+        _hover: {
+          bg: "primary.light",
+        },
+      },
+    },
+  },
+  IconButton: {
+    variants: {
+      primaryInverted: {
+        bg: "transparent",
+        color: "primary.dark",
+      },
+    },
+  },
   Heading: {
     baseStyle: {
       fontWeight: "400",
