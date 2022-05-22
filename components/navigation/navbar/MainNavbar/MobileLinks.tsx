@@ -4,7 +4,7 @@ import { Links, NavLink } from "./LinksBox";
 
 const MobileLinks = () => {
   return (
-    <Box pb={4} display={{ md: "none" }}>
+    <Box display={{ md: "none" }} bg="light.main">
       <Stack as={"nav"} spacing={1}>
         <Button
           as={"a"}

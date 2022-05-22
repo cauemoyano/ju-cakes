@@ -40,7 +40,7 @@ const components = {
     variants: {
       primary: {
         bg: "primary.dark",
-        color: "light.main",
+        color: "primary.light",
       },
       primaryInverted: {
         bg: "transparent",
@@ -67,7 +67,8 @@ const components = {
   },
   Heading: {
     baseStyle: {
-      fontWeight: "400",
+      fontWeight: "500",
+      color: "#000807",
     },
     /*     sizes: {
       small: {
@@ -76,6 +77,11 @@ const components = {
       medium: { fontSize: "25px" },
       large: { fontSize: "30px" },
     }, */
+  },
+  Text: {
+    baseStyle: {
+      color: "#000807",
+    },
   },
 };
 

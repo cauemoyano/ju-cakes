@@ -18,7 +18,14 @@ import SocialBox from "./SocialBox";
 const MainNavbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Container p={4} maxWidth="container.xl">
+    <Container
+      px={4}
+      py={2}
+      maxWidth="container.xl"
+      borderBottom={{ base: "1px", md: "0" }}
+      borderColor="red.100"
+      bg="light.main"
+    >
       <Flex alignItems={"start"} justifyContent={"space-between"}>
         <Flex
           w="250px"
