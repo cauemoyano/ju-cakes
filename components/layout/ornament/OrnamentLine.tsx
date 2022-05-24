@@ -18,8 +18,8 @@ const OrnamentLine = (props: OrnamentProps) => {
           x2="24.5"
           y2="1.5"
           stroke="#690233"
-          stroke-width={props.height}
-          stroke-linecap="round"
+          strokeWidth={props.height}
+          strokeLinecap="round"
         />
       </svg>
     </>
