@@ -58,10 +58,6 @@ const OurProducts = () => {
           >
             Nossos Produtos
           </Heading>
-          {/* <Flex alignItems="center" mt={-2} mb={6}>
-            <Box width="70%" height="3px" bg="primary.dark" mr={2}></Box>
-            <Image src="/ornament-right.svg" alt="" width="30px" />
-          </Flex> */}
           <Text px={4} maxWidth="500px" textAlign="center" mx={"auto"}>
             We’ve got you covered for any holiday, special occasion, or cause
             for celebration. We’ve got you covered for any holiday, special
