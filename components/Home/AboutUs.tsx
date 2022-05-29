@@ -15,7 +15,7 @@ const AboutUs = () => {
     <Box bg="light.main" padding="10vh 0">
       <Container maxWidth="container.xl" p={0}>
         <Heading
-          fontSize={{ base: "3xl", md: "5xl", xl: "6xl" }}
+          fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}
           textAlign="center"
           mb={4}
         >

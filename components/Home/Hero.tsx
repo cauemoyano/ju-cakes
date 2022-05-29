@@ -56,7 +56,7 @@ const Hero = () => {
             />
             <Heading
               as="h1"
-              fontSize={["2xl", null, "5xl", null, "6xl"]}
+              fontSize={["3xl", null, "5xl", null, "6xl"]}
               fontFamily={"inter"}
               color="dark.main"
               fontWeight="extrabold"

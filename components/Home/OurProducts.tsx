@@ -51,7 +51,7 @@ const OurProducts = () => {
       >
         <Box alignItems="start">
           <Heading
-            fontSize={{ base: "3xl", md: "5xl", xl: "6xl" }}
+            fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}
             px={4}
             textAlign="center"
             mb={4}

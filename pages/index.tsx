@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import AboutUs from "../components/home/AboutUs";
 import Hero from "../components/home/Hero";
+import HowWorks from "../components/home/HowWorks";
 import OurProducts from "../components/home/OurProducts";
 import FacebookIconLink from "../components/navigation/links/FacebookIconLink";
 import InstagramIconLink from "../components/navigation/links/InstagramIconLink";
@@ -15,6 +16,7 @@ const Home: NextPage = () => {
       <Hero />
       <OurProducts />
       <AboutUs />
+      <HowWorks />
     </>
   );
 };
