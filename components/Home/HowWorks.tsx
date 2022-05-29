@@ -19,6 +19,7 @@ import StepCard from "./HowWorks/StepCard";
 import BaseWrapperComponent from "./HowWorks/BaseWrapperComponent";
 import MediumWrapperComponent from "./HowWorks/MediumWrapperComponent";
 import XLargeWrapper from "./HowWorks/XLargeWrapperComponent";
+import { MediaQueriesTypes } from "../../utilities/hooks/useViewportChecker";
 
 export const stepsData = [
   {
@@ -43,11 +44,7 @@ export const stepsData = [
   },
 ];
 
-const HowWorks = () => {
-  const [isMd, isLargerThanXl] = useMediaQuery([
-    "(min-width: 768px) and (max-width: 1279.9px)",
-    "(min-width: 1280px)",
-  ]);
+const HowWorks = ({ mediaQueries }: { mediaQueries: MediaQueriesTypes }) => {
   return (
     <Box bg="light.main">
       <Container maxWidth="container.xl">
@@ -61,9 +58,9 @@ const HowWorks = () => {
         <Text textAlign="center" mb={8}>
           Veja como e facil comprar conosco.
         </Text>
-        {isMd ? (
+        {mediaQueries.md ? (
           <MediumWrapperComponent />
-        ) : isLargerThanXl ? (
+        ) : mediaQueries.xl ? (
           <XLargeWrapper />
         ) : (
           <BaseWrapperComponent />

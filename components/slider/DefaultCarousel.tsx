@@ -14,7 +14,7 @@ const cardItems = [
   { title: "Dia das Maes", image: "/products-card.png" },
 ];
 
-export default function CategoryCarousel() {
+export default function DefaultCarousel() {
   return (
     <Box
       sx={{

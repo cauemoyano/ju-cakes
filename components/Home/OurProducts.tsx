@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import CategoryMainCard from "../card/CategoryMainCard";
-import CategoryCarousel from "../slider/CategoryCarousel";
 
 const cardItems = [
   { title: "Pao de Mel", image: "/products-card.png" },
