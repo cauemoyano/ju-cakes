@@ -12,7 +12,11 @@ import OrnamentDivisor from "../layout/ornament/OrnamentDivisor";
 
 const AboutUs = () => {
   return (
-    <Box bg="light.main" padding="10vh 0">
+    <Box
+      bg="light.main"
+      paddingTop={{ base: "3vh", lg: "5vh" }}
+      paddingBottom={{ base: "5vh", lg: "10vh" }}
+    >
       <Container maxWidth="container.xl" p={0}>
         <Heading
           fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}

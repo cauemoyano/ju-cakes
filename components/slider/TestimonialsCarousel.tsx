@@ -75,7 +75,7 @@ export default function TestimonialsCarousel({
             top: "0",
             left: "-5px",
             bg: "black",
-            background: "linear-gradient(to right, #FBF9FF, transparent)",
+            background: "linear-gradient(to right, #C4F4F4, transparent)",
           },
           _after: {
             content: '""',
@@ -86,7 +86,7 @@ export default function TestimonialsCarousel({
             top: "0",
             right: "-5px",
             bg: "black",
-            background: "linear-gradient(to left, #FBF9FF, transparent)",
+            background: "linear-gradient(to left, #C4F4F4, transparent)",
           },
         },
         ".category-swiper li": {

@@ -1,24 +1,38 @@
-import { HStack, Image, Link, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, Image, Link, VStack } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import React from "react";
 import OrnamentLeftSide from "../../../layout/ornament/OrnamentLeftSide";
 import OrnamentLine from "../../../layout/ornament/OrnamentLine";
 import OrnamentRightSide from "../../../layout/ornament/OrnamentRightSide";
+import OrnamentAnimatedBox from "./OrnamentAnimatedBox";
 
 export const Links = ["INICIO", "PRODUTOS", "SOBRE", "AJUDA", "CONTATO"];
 
-const LinksBox = () => {
+const LinksBox = ({ move }: { move: boolean }) => {
   return (
     <VStack>
-      <HStack as={"nav"} spacing={3} display={{ base: "none", md: "flex" }}>
-        <OrnamentLeftSide width="40px" />
-        <OrnamentLine width="10px" height="5px" />
-        {Links.map((link) => (
-          <>
+      <HStack
+        as={"nav"}
+        spacing={move ? 1 : 3}
+        display={{ base: "none", md: "flex" }}
+      >
+        <OrnamentAnimatedBox move={move}>
+          <OrnamentLeftSide width="40px" />
+        </OrnamentAnimatedBox>
+        <OrnamentAnimatedBox move={move}>
+          <OrnamentLine width="10px" height="5px" />
+        </OrnamentAnimatedBox>
+        {Links.map((link, i) => (
+          <Flex alignItems="center" key={i}>
             <NavLink key={link}>{link}</NavLink>
-            <OrnamentLine width="10px" height="5px" />
-          </>
+            <OrnamentAnimatedBox move={move}>
+              <OrnamentLine width="10px" height="5px" />
+            </OrnamentAnimatedBox>
+          </Flex>
         ))}
-        <OrnamentRightSide width="40px" />
+        <OrnamentAnimatedBox move={move}>
+          <OrnamentRightSide width="40px" />
+        </OrnamentAnimatedBox>
       </HStack>
     </VStack>
   );

@@ -5,7 +5,7 @@ import { BsCart } from "react-icons/bs";
 
 const CartAuthBox = () => {
   return (
-    <HStack as="nav" spacing={3}>
+    <HStack as="nav" spacing={3} justifyContent="end">
       <IconButton
         size={"md"}
         icon={<BsCart />}

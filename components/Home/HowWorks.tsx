@@ -46,7 +46,11 @@ export const stepsData = [
 
 const HowWorks = ({ mediaQueries }: { mediaQueries: MediaQueriesTypes }) => {
   return (
-    <Box bg="light.main">
+    <Box
+      bg="light.main"
+      paddingTop={{ base: "3vh", lg: "5vh" }}
+      paddingBottom="3vh"
+    >
       <Container maxWidth="container.xl">
         <Heading
           fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}
@@ -60,7 +64,7 @@ const HowWorks = ({ mediaQueries }: { mediaQueries: MediaQueriesTypes }) => {
         </Text>
         {mediaQueries.md ? (
           <MediumWrapperComponent />
-        ) : mediaQueries.xl ? (
+        ) : mediaQueries.xl || mediaQueries.lg ? (
           <XLargeWrapper />
         ) : (
           <BaseWrapperComponent />

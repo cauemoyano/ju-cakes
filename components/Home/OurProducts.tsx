@@ -30,23 +30,16 @@ const OurProducts = () => {
       setOverflow(true);
     }
   }, [cardsWrapperRef]);
-  /* const cardOverflow = useMemo(() => {
-    if (!cardsWrapperRef.current) return false;
-    return cardsWrapperRef.current.scrollWidth > window.innerWidth;
-  }, [cardsWrapperDimensions]); */
-  /* const cardOverflow = cardsWrapperDimensions?.borderBox.width
-    ? cardsWrapperDimensions?.borderBox?.width > window.innerWidth
-    : false; */
 
   return (
-    <Box bg="light.alternative">
+    <Box bg="primary.light">
       <Container
         maxWidth="container.xl"
         display="flex"
         flexDirection="column"
         height="100%"
         px={0}
-        paddingTop="5vh"
+        paddingTop={{ base: "3vh", lg: "5vh" }}
       >
         <Box alignItems="start">
           <Heading
@@ -94,8 +87,8 @@ const OurProducts = () => {
               gap="1rem"
               p={6}
               padding={{
-                base: "calc(max(15vw, 150px)*0.9) calc(max(15vw, 100px)*0.5)",
-                md: "calc(max(15vw, 150px)*0.9) 1rem",
+                base: "calc(max(15vw, 150px)*0.9) calc(max(15vw, 100px)*0.5) 5vh",
+                md: "calc(max(15vw, 150px)*0.9) 1rem 5vh",
               }}
               sx={{
                 li: { listStyleType: "none" },

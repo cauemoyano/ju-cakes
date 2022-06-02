@@ -10,7 +10,11 @@ const Testimonials = ({
   mediaQueries: MediaQueriesTypes;
 }) => {
   return (
-    <Box bg="light.main" padding="10vh 0 5vh">
+    <Box
+      bg="secondary.light"
+      paddingTop={{ base: "3vh", lg: "5vh" }}
+      paddingBottom={{ base: "3vh", lg: "5vh" }}
+    >
       <Container maxWidth="container.xl">
         <Heading
           fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}
