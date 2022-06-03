@@ -11,12 +11,13 @@ import { useRouter } from "next/router";
 import React from "react";
 import ProductCard from "../../components/card/ProductCard";
 import CategoriesCarousel from "../../components/slider/CategoriesCarousel";
+import { NAV_PAGE_PADDING } from "../../utilities/constants";
 
 const Category = () => {
   const router = useRouter();
   const { name } = router.query;
   return (
-    <Box paddingTop={"66px"}>
+    <Box paddingTop={NAV_PAGE_PADDING}>
       <Flex>
         <Box
           display="flex"
@@ -26,11 +27,7 @@ const Category = () => {
           width={{ base: "100%", md: "50%" }}
         >
           <Box p={8} ml="auto" maxWidth="container.sm">
-            <Heading
-              as="h1"
-              /*    mt={4} */
-              fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}
-            >
+            <Heading as="h1" fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}>
               Brownie
             </Heading>
             <Text>
@@ -42,7 +39,7 @@ const Category = () => {
           </Box>
         </Box>
         <Box display={{ base: "none", md: "block" }} width="50%">
-          <Image src="/category-brownie.png" h="full" w="full" />
+          <Image src="/category-brownie.png" h="full" w="full" alt="" />{" "}
         </Box>
       </Flex>
       <Container maxWidth="container.lg" p={4}>
