@@ -14,56 +14,41 @@ const useViewportChecker = () => {
     lg: false,
     xl: false,
   });
-  const [isMd, setIsMd] = useState(false);
-  const [isLg, setIsLg] = useState(false);
-  const [isXl, setIsXl] = useState(false);
+  const [moreThan, setMoreThan] = useState({ md: false });
 
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      if (screenWidth < 375) {
-        setMediaQueries({
-          xs: true,
-          md: false,
-          lg: false,
-          xl: false,
-        });
-        return;
-      }
-      if (screenWidth >= 768 && screenWidth < 992) {
-        setMediaQueries({
-          xs: false,
-          md: true,
-          lg: false,
-          xl: false,
-        });
-
-        return;
-      }
-      if (screenWidth >= 992 && screenWidth < 1280) {
-        setMediaQueries({
-          xs: false,
-          md: false,
-          lg: true,
-          xl: false,
-        });
-        return;
-      }
-      if (screenWidth >= 1280) {
-        setMediaQueries({
-          xs: false,
-          md: false,
-          lg: false,
-          xl: true,
-        });
-        return;
-      }
-      setMediaQueries({
+      const allViews = {
         xs: false,
         md: false,
         lg: false,
         xl: false,
-      });
+      };
+      if (screenWidth >= 768) {
+        setMoreThan({ md: true });
+      } else {
+        setMoreThan({ md: false });
+      }
+      if (screenWidth < 375) {
+        setMediaQueries({ ...allViews, xs: true });
+        return;
+      }
+      if (screenWidth >= 768 && screenWidth < 992) {
+        setMediaQueries({ ...allViews, md: true });
+
+        return;
+      }
+      if (screenWidth >= 992 && screenWidth < 1280) {
+        setMediaQueries({ ...allViews, lg: true });
+        return;
+      }
+      if (screenWidth >= 1280) {
+        setMediaQueries({ ...allViews, xl: true });
+        return;
+      }
+
+      setMediaQueries({ ...allViews });
     };
 
     handleResize();
@@ -73,7 +58,7 @@ const useViewportChecker = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return { mediaQueries };
+  return { mediaQueries, moreThan };
 };
 
 export default useViewportChecker;
