@@ -1,4 +1,5 @@
 import {
+  Box,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -26,7 +27,7 @@ const ButtonWithPopOver = ({
       <PopoverContent>
         <PopoverArrow />
         <PopoverCloseButton />
-        <PopoverHeader>{popoverHeader}</PopoverHeader>
+        {popoverHeader && <PopoverHeader>{popoverHeader}</PopoverHeader>}
         <PopoverBody>{popoverBody}</PopoverBody>
       </PopoverContent>
     </Popover>

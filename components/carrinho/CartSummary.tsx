@@ -120,13 +120,8 @@ const CartSummary = () => {
         </Button>
       ) : (
         <ButtonWithPopOver popoverBody="Voce deve seleionar uma data antes de prosseguir.">
-          <Button
-            ref={finalRef}
-            mt={4}
-            disabled={true}
-            colorScheme="primaryNumbered"
-          >
-            Selecione uma data
+          <Button ref={finalRef} mt={4} colorScheme="primaryNumbered">
+            Finalizar Pedido
           </Button>
         </ButtonWithPopOver>
       )}
