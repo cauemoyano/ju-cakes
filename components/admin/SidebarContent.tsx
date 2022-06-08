@@ -13,11 +13,11 @@ import { BsCalendar2Date, BsChatQuote } from "react-icons/bs";
 import { FiHome, FiUsers, FiPackage, FiLayers } from "react-icons/fi";
 import CustomLink from "../primitives/CustomLink";
 import AdminCalendar from "./AdminCalendar";
-import AdminCustomer from "./AdminCustomer";
+import AdminCustomer from "./AdminCustomer/AdminCustomer";
 import AdminHome from "./AdminHome";
 import AdminOrders from "./AdminOrders";
-import AdminProducts from "./AdminProducts";
-import AdminTestimonials from "./Admintestimonials";
+import AdminProducts from "./AdminProducts/AdminProducts";
+import AdminTestimonials from "./AdminTestimonials";
 
 interface LinkItemProps {
   name: string;
@@ -106,7 +106,7 @@ const NavItem = ({ icon, path, children, ...rest }: NavItemProps) => {
       href={path}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
-      _active={{ bg: "primary.dark" }}
+      active={{ color: "primary.dark" }}
     >
       <Flex
         align="center"
@@ -116,7 +116,7 @@ const NavItem = ({ icon, path, children, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "primary.main",
+          bg: "secondary.dark",
           color: "white",
         }}
         {...rest}

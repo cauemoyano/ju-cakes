@@ -27,7 +27,7 @@ const Admin = () => {
   const cmp = findSlugMatchingCmp()?.component;
 
   return (
-    <Box minH="100vh" bg="gray.100">
+    <Box minH="100vh" bg="light.main">
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}

@@ -11,11 +11,11 @@ interface Props extends LinkProps {
 const CustomLink = ({ href, active, children, ...rest }: Props) => {
   const router = useRouter();
 
-  console.log(router.asPath, href);
-
+  const splittedRoute = router.asPath.split("/");
+  const slug = splittedRoute[splittedRoute.length - 1];
   return (
     <NextLink href={href} passHref>
-      <Link {...rest} /* sx={router.asPath == href && active ? active : {}} */>
+      <Link {...rest} sx={slug == href && active ? active : {}}>
         {children}
       </Link>
     </NextLink>
