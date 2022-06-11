@@ -2,8 +2,10 @@ import { Box, Button, HStack, IconButton } from "@chakra-ui/react";
 import React from "react";
 
 import { BsCart } from "react-icons/bs";
+import { useAuth } from "../../../../context/AuthContext";
 
 const CartAuthBox = () => {
+  const { logout } = useAuth();
   return (
     <HStack as="nav" spacing={0} justifyContent="end">
       <IconButton
@@ -25,6 +27,9 @@ const CartAuthBox = () => {
         </Button>
         <Button as={"a"} fontWeight={400} variant={"primary"} href={"#"}>
           Registrar
+        </Button>
+        <Button fontWeight={400} variant={"primaryInverted"} onClick={logout}>
+          Sair
         </Button>
       </Box>
     </HStack>

@@ -14,20 +14,25 @@ import {
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { LoginSchema } from "../../../utilities/yup/Schemas";
+import { useAuth } from "../../../context/AuthContext";
 
 const LoginComponent = () => {
   const [show, setShow] = useState(false);
+  const { login } = useAuth();
 
   return (
     <VStack spacing={4}>
       <Formik
         initialValues={{ email: "", senha: "" }}
         validationSchema={LoginSchema}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+        onSubmit={async (values, actions) => {
+          try {
+            await login(values.email, values.senha);
+          } catch (error) {
+            console.log(error);
+          } finally {
             actions.setSubmitting(false);
-          }, 1000);
+          }
         }}
       >
         {({ isSubmitting, errors, touched, values, handleChange }) => (

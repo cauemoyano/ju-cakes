@@ -20,11 +20,13 @@ import { Formik, Form, Field } from "formik";
 import PhoneInput from "../../primitives/PhoneInput";
 import { RegisterSchema } from "../../../utilities/yup/Schemas";
 import ButtonWithPopOver from "../../primitives/ButtonWithPopOver";
+import { useAuth } from "../../../context/AuthContext";
 
 const RegisterComponent = () => {
   const [show, setShow] = useState(false);
   const [termsAndPolicies, setTermsAndPolicies] = useState(false);
   const [newsAndOffers, setNewsAndOffers] = useState(false);
+  const { signup, setUserData } = useAuth();
 
   return (
     <VStack spacing={4}>
@@ -37,11 +39,22 @@ const RegisterComponent = () => {
           confirmPassword: "",
         }}
         validationSchema={RegisterSchema}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+        onSubmit={async (values, actions) => {
+          try {
+            const credentials = await signup(
+              values.emailRegister,
+              values.password
+            );
+            await setUserData(credentials.user.uid, {
+              phone: values.phone,
+              name: values.name,
+              newsAndOffers,
+            });
+          } catch (error) {
+            console.log(error);
+          } finally {
             actions.setSubmitting(false);
-          }, 1000);
+          }
         }}
       >
         {({ isSubmitting, errors, touched, values, handleChange }) => (
