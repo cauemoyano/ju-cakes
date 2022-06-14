@@ -15,10 +15,14 @@ import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { LoginSchema } from "../../../utilities/yup/Schemas";
 import { useAuth } from "../../../context/AuthContext";
+import useErrorHandler, {
+  firebaseErrorMap,
+} from "../../../services/useErrorHandler/useErrorHandler";
 
 const LoginComponent = () => {
   const [show, setShow] = useState(false);
   const { login } = useAuth();
+  const { setError } = useErrorHandler();
 
   return (
     <VStack spacing={4}>
@@ -28,8 +32,18 @@ const LoginComponent = () => {
         onSubmit={async (values, actions) => {
           try {
             await login(values.email, values.senha);
-          } catch (error) {
-            console.log(error);
+            //todo - redirect to user page, hide logins page/btns if admin to admin page
+          } catch (error: any) {
+            if (
+              error.code === "auth/user-not-found" ||
+              error.code === "auth/wrong-password"
+            ) {
+              actions.setFieldError(
+                "email",
+                firebaseErrorMap["auth/user-not-found"]
+              );
+            }
+            setError(error);
           } finally {
             actions.setSubmitting(false);
           }

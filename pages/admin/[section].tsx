@@ -6,10 +6,18 @@ import {
   LinkItems,
   SidebarContent,
 } from "../../components/admin/SidebarContent";
+import { ProductsProvider } from "../../context/ProductsContext";
+import CustomerProvider from "../../context/Admin/CustomersContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Admin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user || !user?.admin) router.push("/");
+  }, [user]);
 
   const currentPath = router.query.section;
 
@@ -25,7 +33,9 @@ const Admin = () => {
   }, [router]);
 
   const cmp = findSlugMatchingCmp()?.component;
-
+  if (!user) {
+    return null;
+  }
   return (
     <Box minH="100vh" bg="light.main">
       <SidebarContent
@@ -48,7 +58,9 @@ const Admin = () => {
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
-        {cmp}
+        <CustomerProvider>
+          <ProductsProvider>{cmp}</ProductsProvider>
+        </CustomerProvider>
       </Box>
     </Box>
   );

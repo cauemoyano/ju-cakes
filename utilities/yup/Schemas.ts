@@ -25,3 +25,10 @@ export const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Email inválido").required("Insira seu email"),
   senha: Yup.string().required("Insira sua senha"),
 });
+
+export const ProductSchema = Yup.object().shape({
+  productName: Yup.string().required("Nome é obrigatório"),
+});
+export const CategorySchema = Yup.object().shape({
+  name: Yup.string().required("Nome é obrigatório"),
+});

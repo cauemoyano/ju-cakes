@@ -45,16 +45,16 @@ export const AuthUserProvider = ({
         user
           .getIdTokenResult()
           .then((idTokenResult) => {
-            console.log(idTokenResult);
+            setUser({
+              uid: user.uid,
+              email: user.email,
+              name: user.displayName,
+              admin: !!idTokenResult.claims?.admin,
+            });
           })
           .catch((error) => {
             console.log(error);
           });
-        setUser({
-          uid: user.uid,
-          email: user.email,
-          name: user.displayName,
-        });
       } else {
         setUser(null);
       }
@@ -77,7 +77,7 @@ export const AuthUserProvider = ({
     data: { phone: string; newsAndOffers: boolean; name: string }
   ) => {
     const { phone, newsAndOffers, name } = data;
-    return setDoc(doc(db, "users", uid), {
+    return setDoc(doc(db, "customers", uid), {
       phone,
       newsAndOffers,
       name,

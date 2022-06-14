@@ -13,11 +13,12 @@ import React, { useRef } from "react";
 interface Props extends BoxProps {
   isOpen: boolean;
   onClose: () => void;
+  handleDelete: () => void;
   header: React.ReactElement;
   body: React.ReactElement;
 }
 
-const AlertModal = ({ isOpen, onClose, header, body }: Props) => {
+const AlertModal = ({ isOpen, onClose, header, body, handleDelete }: Props) => {
   const cancelRef = useRef(null);
   return (
     <AlertDialog
@@ -37,7 +38,7 @@ const AlertModal = ({ isOpen, onClose, header, body }: Props) => {
             <Button ref={cancelRef} onClick={onClose}>
               Cancelar
             </Button>
-            <Button colorScheme="red" onClick={onClose} ml={3}>
+            <Button colorScheme="red" onClick={handleDelete} ml={3}>
               Deletar
             </Button>
           </AlertDialogFooter>

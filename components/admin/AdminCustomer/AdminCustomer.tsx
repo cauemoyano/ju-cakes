@@ -1,5 +1,6 @@
 import { Container, Heading } from "@chakra-ui/react";
 import React from "react";
+import { useCustomer } from "../../../context/Admin/CustomersContext";
 import CustomersTable from "./CustomersTable";
 import NameFilter from "./NameFilter";
 

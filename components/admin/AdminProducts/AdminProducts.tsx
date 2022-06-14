@@ -14,13 +14,14 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
+
 import AlertModal from "../../layout/modal/AlertModal";
 import SimpleModal from "../../layout/modal/SimpleModal";
 import CategoriesTable from "./CategoriesTable";
+import ProductModal from "./ProductModal";
 import ProductsTable from "./ProductsTable";
 
 const AdminProducts = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isDeleteOpen,
     onOpen: onDeleteOpen,
@@ -57,53 +58,13 @@ const AdminProducts = () => {
             <Button leftIcon={<AddIcon />} mb={4} colorScheme="primaryNumbered">
               Adicionar Produto
             </Button>
-            <ProductsTable onOpen={onOpen} onDeleteOpen={onDeleteOpen} />
+            <ProductsTable onDeleteOpen={onDeleteOpen} />
           </TabPanel>
           <TabPanel>
-            <Button leftIcon={<AddIcon />} mb={4} colorScheme="primaryNumbered">
-              Adicionar Categoria
-            </Button>
-            <CategoriesTable onOpen={onOpen} onDeleteOpen={onDeleteOpen} />
+            <CategoriesTable />
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <SimpleModal
-        onClose={onClose}
-        isOpen={isOpen}
-        header={<Heading fontFamily="inter">Adicionar/Editar Produto</Heading>}
-        footer={
-          <HStack>
-            <Button colorScheme="primaryNumbered" mr={3}>
-              Salvar
-            </Button>
-            <Button
-              colorScheme="primaryNumbered"
-              variant="outline"
-              mr={3}
-              onClick={onClose}
-            >
-              Fechar
-            </Button>
-          </HStack>
-        }
-      >
-        <VStack align="left" spacing={4} mb={4}>
-          <VStack align="left">
-            <Text fontWeight={600}>Email</Text>
-            <Text>joaodasilva@email.com</Text>
-          </VStack>
-          <VStack align="left">
-            <Text fontWeight={600}>Telefone</Text>
-            <Text>(13) 99999-9999</Text>
-          </VStack>
-        </VStack>
-      </SimpleModal>
-      <AlertModal
-        isOpen={isDeleteOpen}
-        onClose={onDeleteClose}
-        header={<Text>Deletar produto/categoria</Text>}
-        body={<Text>Tem certeza que deseja deletar esse item?</Text>}
-      />
     </Container>
   );
 };

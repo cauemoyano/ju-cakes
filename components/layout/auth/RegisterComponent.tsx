@@ -14,48 +14,67 @@ import {
   Stack,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
+import React, { useRef, useState } from "react";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 
 import PhoneInput from "../../primitives/PhoneInput";
 import { RegisterSchema } from "../../../utilities/yup/Schemas";
 import ButtonWithPopOver from "../../primitives/ButtonWithPopOver";
 import { useAuth } from "../../../context/AuthContext";
+import useErrorHandler, {
+  firebaseErrorMap,
+} from "../../../services/useErrorHandler/useErrorHandler";
 
 const RegisterComponent = () => {
   const [show, setShow] = useState(false);
   const [termsAndPolicies, setTermsAndPolicies] = useState(false);
   const [newsAndOffers, setNewsAndOffers] = useState(false);
   const { signup, setUserData } = useAuth();
+  const { setError } = useErrorHandler();
+  const emailRef = useRef<HTMLInputElement | null>(null);
+
+  const initialValues = {
+    name: "",
+    emailRegister: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  };
+
+  const handleSubmit = async (
+    values: typeof initialValues,
+    actions: FormikHelpers<typeof initialValues>
+  ) => {
+    const { resetForm, setSubmitting, setFieldError } = actions;
+    try {
+      const credentials = await signup(values.emailRegister, values.password);
+      await setUserData(credentials.user.uid, {
+        phone: values.phone,
+        name: values.name,
+        newsAndOffers,
+      });
+      resetForm({ values: initialValues });
+      //todo - redirect to home, hide login pages/btns
+    } catch (error: any) {
+      if (error?.code === "auth/email-already-in-use") {
+        setFieldError(
+          "emailRegister",
+          firebaseErrorMap["auth/email-already-in-use"]
+        );
+        emailRef.current?.focus();
+      }
+      setError(error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <VStack spacing={4}>
       <Formik
-        initialValues={{
-          name: "",
-          emailRegister: "",
-          phone: "",
-          password: "",
-          confirmPassword: "",
-        }}
+        initialValues={initialValues}
         validationSchema={RegisterSchema}
-        onSubmit={async (values, actions) => {
-          try {
-            const credentials = await signup(
-              values.emailRegister,
-              values.password
-            );
-            await setUserData(credentials.user.uid, {
-              phone: values.phone,
-              name: values.name,
-              newsAndOffers,
-            });
-          } catch (error) {
-            console.log(error);
-          } finally {
-            actions.setSubmitting(false);
-          }
-        }}
+        onSubmit={handleSubmit}
       >
         {({ isSubmitting, errors, touched, values, handleChange }) => (
           <Form>
@@ -81,6 +100,7 @@ const RegisterComponent = () => {
                   type="email"
                   value={values.emailRegister}
                   onChange={handleChange}
+                  ref={emailRef}
                 />
                 <FormErrorMessage>{errors.emailRegister}</FormErrorMessage>
               </FormControl>
