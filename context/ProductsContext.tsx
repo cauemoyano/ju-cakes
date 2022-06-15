@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import useCloudinary from "../services/useCloudinary/useCloudinary";
 import useErrorHandler from "../services/useErrorHandler/useErrorHandler";
 import { useFirebaseStorage } from "../services/useFirebaseStorage/useFirebaseStorage";
 import { Category } from "../utilities/Types/Category";
@@ -18,6 +19,7 @@ type ProductsContextType = {
   categories: Category[];
   updateCategories: () => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
+  uploadImage: (file: File) => Promise<Response | undefined>;
 };
 
 const ProductsContext = createContext<ProductsContextType | {}>({});
@@ -33,6 +35,7 @@ export const ProductsProvider = ({
   const { setError } = useErrorHandler();
   const { updateDoc, createDoc, getCollection, deleteDocument } =
     useFirebaseStorage();
+  const { uploadFile } = useCloudinary();
   const [products, setProducts] = useState({});
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -69,6 +72,15 @@ export const ProductsProvider = ({
     return deleteDocument(id, "categories");
   };
 
+  const uploadImage = useCallback(async (file: File) => {
+    try {
+      const data = await uploadFile(file);
+      return data.json();
+    } catch (error) {
+      setError(error);
+    }
+  }, []);
+
   return (
     <ProductsContext.Provider
       value={{
@@ -78,6 +90,7 @@ export const ProductsProvider = ({
         categories,
         updateCategories,
         deleteCategory,
+        uploadImage,
       }}
     >
       {children}

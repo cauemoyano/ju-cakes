@@ -23,7 +23,7 @@ import { Category } from "../../../utilities/Types/Category";
 import AlertModal from "../../layout/modal/AlertModal";
 import CategoryModal from "./CategoryModal";
 
-const initialValues: Category = { name: "" };
+const initialValues: Category = { name: "", image: "" };
 
 const CategoriesTable = () => {
   const toast = useToast();
@@ -101,9 +101,9 @@ const CategoriesTable = () => {
               <Tr key={category.id}>
                 <Td>
                   <Flex direction="row" alignItems="center">
-                    {/*  {category?.thumbnail && (
-                      <Image src={category.thumbnail} maxWidth="50px" mr={2} />
-                    )} */}
+                    {category?.image && (
+                      <Image src={category.image} maxWidth="100px" mr={4} />
+                    )}
                     <Text fontWeight={600}>{category.name}</Text>
                   </Flex>
                 </Td>

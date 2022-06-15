@@ -1,3 +1,4 @@
+import { useToast } from "@chakra-ui/react";
 import { FirebaseError } from "firebase/app";
 import React, { useEffect, useState } from "react";
 
@@ -8,6 +9,7 @@ export const firebaseErrorMap = {
 
 const useErrorHandler = () => {
   const [error, setError] = useState<any>(null);
+  const toast = useToast();
 
   useEffect(() => {
     if (!error) return;
@@ -17,11 +19,20 @@ const useErrorHandler = () => {
 
   const cleanup = () => setError(null);
 
-  const report = (err: FirebaseError) => console.log(err.code);
-
+  const report = (err: any) => console.log(err.message);
+  const errorToast = (message: string) => {
+    toast({
+      title: "Ocorreu um erro.",
+      description: message,
+      status: "error",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
   return {
     error,
     setError,
+    errorToast,
   };
 };
 
