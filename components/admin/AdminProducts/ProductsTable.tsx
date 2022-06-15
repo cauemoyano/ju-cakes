@@ -1,5 +1,6 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Flex,
   HStack,
   IconButton,
@@ -13,14 +14,84 @@ import {
   Thead,
   Tr,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
+import { useProducts } from "../../../context/ProductsContext";
+import useErrorHandler from "../../../services/useErrorHandler/useErrorHandler";
+import { Product } from "../../../utilities/Types/Products";
+import AlertModal from "../../layout/modal/AlertModal";
 import ProductModal from "./ProductModal";
 
-const ProductsTable = ({ onDeleteOpen }: { onDeleteOpen: () => void }) => {
+const initialValues: Product = {
+  productName: "",
+  description: "",
+  ingredients: "",
+  price: 0,
+  image: "",
+  variant: "20 Unidades",
+};
+
+const ProductsTable = () => {
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
+  } = useDisclosure();
+  const { setError } = useErrorHandler();
+  const { products, deleteProduct, updateProducts } = useProducts();
+  const [modalInputs, setModalInputs] = useState<Product>(initialValues);
+  const [deleteId, setDeleteId] = useState("");
+
+  const handleEdit = (product: Product) => {
+    setModalInputs(product);
+    onOpen();
+  };
+
+  const handleClose = () => {
+    setModalInputs(initialValues);
+    onClose();
+  };
+
+  const handleDeleteModal = async (id: string) => {
+    setDeleteId(id);
+    onDeleteOpen();
+  };
+
+  const handleDelete = async () => {
+    if (!deleteId) return;
+    try {
+      await deleteProduct(deleteId);
+      await updateProducts();
+      toast({
+        title: "Produto excluído.",
+        description: "O Produto foi excluído com sucesso.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      clearDelete();
+    } catch (err) {
+      setError(err);
+    }
+  };
+
+  const clearDelete = () => {
+    setDeleteId("");
+    onDeleteClose();
+  };
   return (
     <>
+      <Button
+        onClick={onOpen}
+        leftIcon={<AddIcon />}
+        mb={4}
+        colorScheme="primaryNumbered"
+      >
+        Adicionar Produto
+      </Button>
       <TableContainer bg="gray.50" overflow="auto">
         <Table variant="simple">
           <Thead>
@@ -40,65 +111,75 @@ const ProductsTable = ({ onDeleteOpen }: { onDeleteOpen: () => void }) => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr
-            /*   onClick={onOpen} */
-            >
-              <Td>
-                <Flex direction="row" alignItems="center">
-                  <Image
-                    src="/brownie-product-page.png"
-                    maxWidth="50px"
-                    mr={2}
-                  />
-                  <Text fontWeight={600}>Brownie 2</Text>
-                </Flex>
-              </Td>
-              <Td display={{ base: "block", md: "none" }}>
-                <HStack>
-                  <IconButton
-                    onClick={onOpen}
-                    variant="ghost"
-                    colorScheme={"cyan"}
-                    size="lg"
-                    aria-label="Editar produto"
-                    icon={<EditIcon />}
-                  />
-                  <IconButton
-                    onClick={onDeleteOpen}
-                    variant="ghost"
-                    colorScheme={"red"}
-                    size="lg"
-                    aria-label="Deletar produto"
-                    icon={<DeleteIcon />}
-                  />
-                </HStack>
-              </Td>
-              <Td>Brownie</Td>
-              <Td display={{ base: "none", md: "block" }}>
-                <HStack>
-                  <IconButton
-                    onClick={onOpen}
-                    variant="ghost"
-                    colorScheme={"cyan"}
-                    size="lg"
-                    aria-label="Editar produto"
-                    icon={<EditIcon />}
-                  />
-                  <IconButton
-                    onClick={onDeleteOpen}
-                    variant="ghost"
-                    colorScheme={"red"}
-                    size="lg"
-                    aria-label="Deletar produto"
-                    icon={<DeleteIcon />}
-                  />
-                </HStack>
-              </Td>
-            </Tr>
+            {products.map((product) => (
+              <Tr key={product.id}>
+                <Td>
+                  <Flex direction="row" alignItems="center">
+                    {product?.image && (
+                      <Image src={product.image} maxWidth="100px" mr={4} />
+                    )}
+
+                    <Text fontWeight={600}>{product.productName}</Text>
+                  </Flex>
+                </Td>
+                <Td display={{ base: "block", md: "none" }}>
+                  <HStack>
+                    <IconButton
+                      onClick={() => handleEdit(product)}
+                      variant="ghost"
+                      colorScheme={"cyan"}
+                      size="lg"
+                      aria-label="Editar produto"
+                      icon={<EditIcon />}
+                    />
+                    <IconButton
+                      onClick={() => handleDeleteModal(product.id!)}
+                      variant="ghost"
+                      colorScheme={"red"}
+                      size="lg"
+                      aria-label="Deletar produto"
+                      icon={<DeleteIcon />}
+                    />
+                  </HStack>
+                </Td>
+                <Td>{product.category}</Td>
+                <Td display={{ base: "none", md: "block" }}>
+                  <HStack>
+                    <IconButton
+                      onClick={() => handleEdit(product)}
+                      variant="ghost"
+                      colorScheme={"cyan"}
+                      size="lg"
+                      aria-label="Editar produto"
+                      icon={<EditIcon />}
+                    />
+                    <IconButton
+                      onClick={() => handleDeleteModal(product.id!)}
+                      variant="ghost"
+                      colorScheme={"red"}
+                      size="lg"
+                      aria-label="Deletar produto"
+                      icon={<DeleteIcon />}
+                    />
+                  </HStack>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </TableContainer>
-      <ProductModal isOpen={isOpen} onClose={onClose} />
+      <ProductModal
+        isOpen={isOpen}
+        initialValues={modalInputs}
+        handleClose={handleClose}
+      />
+      <AlertModal
+        isOpen={isDeleteOpen}
+        onClose={clearDelete}
+        handleDelete={handleDelete}
+        header={<Text>Deletar produto</Text>}
+        body={<Text>Tem certeza que deseja deletar esse produto?</Text>}
+      />
     </>
   );
 };

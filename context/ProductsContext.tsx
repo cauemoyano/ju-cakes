@@ -13,12 +13,14 @@ import { Category } from "../utilities/Types/Category";
 import { Product } from "../utilities/Types/Products";
 
 type ProductsContextType = {
-  products: { productName: string };
   createOrUpdateProduct: (data: Product, uid?: string) => Promise<void>;
   createOrUpdateCategory: (data: Category, uid?: string) => Promise<void>;
   categories: Category[];
+  products: Product[];
   updateCategories: () => Promise<void>;
+  updateProducts: () => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
+  deleteProduct: (id: string) => Promise<void>;
   uploadImage: (file: File) => Promise<Response | undefined>;
 };
 
@@ -36,12 +38,13 @@ export const ProductsProvider = ({
   const { updateDoc, createDoc, getCollection, deleteDocument } =
     useFirebaseStorage();
   const { uploadFile } = useCloudinary();
-  const [products, setProducts] = useState({});
+  const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     (async () => {
       try {
+        await updateProducts();
         await updateCategories();
       } catch (error) {
         setError(error);
@@ -68,8 +71,16 @@ export const ProductsProvider = ({
     setCategories(categories);
   }, []);
 
+  const updateProducts = useCallback(async () => {
+    const products = (await getCollection("products")) as Product[];
+    setProducts(products);
+  }, []);
+
   const deleteCategory = (id: string) => {
     return deleteDocument(id, "categories");
+  };
+  const deleteProduct = (id: string) => {
+    return deleteDocument(id, "products");
   };
 
   const uploadImage = useCallback(async (file: File) => {
@@ -85,11 +96,13 @@ export const ProductsProvider = ({
     <ProductsContext.Provider
       value={{
         products,
+        categories,
         createOrUpdateProduct,
         createOrUpdateCategory,
-        categories,
         updateCategories,
+        updateProducts,
         deleteCategory,
+        deleteProduct,
         uploadImage,
       }}
     >

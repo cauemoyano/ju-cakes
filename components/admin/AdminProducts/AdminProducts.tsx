@@ -22,11 +22,6 @@ import ProductModal from "./ProductModal";
 import ProductsTable from "./ProductsTable";
 
 const AdminProducts = () => {
-  const {
-    isOpen: isDeleteOpen,
-    onOpen: onDeleteOpen,
-    onClose: onDeleteClose,
-  } = useDisclosure();
   return (
     <Container maxWidth="container.lg" p={0}>
       <Heading as="h1" fontFamily="inter" mb={8} mt={{ base: 4, md: 8 }}>
@@ -55,10 +50,7 @@ const AdminProducts = () => {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Button leftIcon={<AddIcon />} mb={4} colorScheme="primaryNumbered">
-              Adicionar Produto
-            </Button>
-            <ProductsTable onDeleteOpen={onDeleteOpen} />
+            <ProductsTable />
           </TabPanel>
           <TabPanel>
             <CategoriesTable />

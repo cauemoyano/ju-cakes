@@ -141,8 +141,8 @@ const CategoriesTable = () => {
         isOpen={isDeleteOpen}
         onClose={clearDelete}
         handleDelete={handleDelete}
-        header={<Text>Deletar produto/categoria</Text>}
-        body={<Text>Tem certeza que deseja deletar esse item?</Text>}
+        header={<Text>Deletar categoria</Text>}
+        body={<Text>Tem certeza que deseja deletar essa categoria?</Text>}
       />
     </>
   );

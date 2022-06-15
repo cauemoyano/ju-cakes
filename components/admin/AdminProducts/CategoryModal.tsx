@@ -35,6 +35,12 @@ const CategoryModal = ({
     }
   }, []);
 
+  const cleanAndClose = () => {
+    setImageFile(null);
+    setImageSrc("");
+    handleClose();
+  };
+
   const handleSubmit = async (
     values: {
       name: string;
@@ -68,7 +74,8 @@ const CategoryModal = ({
         duration: 3000,
         isClosable: true,
       });
-      handleClose();
+      cleanAndClose();
+      setImageSrc("");
     } catch (err: any) {
       setError(err);
       errorToast(err?.message);
@@ -84,8 +91,6 @@ const CategoryModal = ({
       if (onLoadEvent.target) {
         setImageSrc(onLoadEvent?.target.result);
       }
-
-      /* setUploadData(undefined); */
     };
     if (changeEvent.target.files && changeEvent.target.files.length) {
       reader.readAsDataURL(changeEvent.target.files[0]);
@@ -98,16 +103,16 @@ const CategoryModal = ({
 
   return (
     <SimpleModal
-      onClose={handleClose}
+      onClose={cleanAndClose}
       isOpen={isOpen}
-      header={<Heading fontFamily="inter">Adicionar/Editar Produto</Heading>}
+      header={<Heading fontFamily="inter">Adicionar/Editar Categoria</Heading>}
       footer={
         <HStack>
           <Button
             colorScheme="primaryNumbered"
             variant="outline"
             mr={3}
-            onClick={handleClose}
+            onClick={cleanAndClose}
           >
             Fechar
           </Button>
