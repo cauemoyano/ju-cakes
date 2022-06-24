@@ -27,7 +27,7 @@ export const LoginSchema = Yup.object().shape({
 });
 
 export const ProductSchema = Yup.object().shape({
-  productName: Yup.string().required("Nome é obrigatório"),
+  name: Yup.string().required("Nome é obrigatório"),
   category: Yup.string().required("Categoria é obrigatório"),
   description: Yup.string().required("Descrição é obrigatório"),
   ingredients: Yup.string().required("Ingredientes é obrigatório"),

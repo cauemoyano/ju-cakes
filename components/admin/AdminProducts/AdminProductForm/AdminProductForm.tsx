@@ -34,19 +34,16 @@ const ProductForm = ({
     >
       {({ isSubmitting, errors, touched, values, handleChange }) => (
         <Form>
-          <FormControl
-            isInvalid={!!(errors.productName && touched.productName)}
-            mb={4}
-          >
-            <FormLabel htmlFor="productName">Nome</FormLabel>
+          <FormControl isInvalid={!!(errors.name && touched.name)} mb={4}>
+            <FormLabel htmlFor="name">Nome</FormLabel>
             <Input
-              name="productName"
+              name="name"
               id="productName"
               type="text"
-              value={values.productName}
+              value={values.name}
               onChange={handleChange}
             />
-            <FormErrorMessage>{errors.productName}</FormErrorMessage>
+            <FormErrorMessage>{errors.name}</FormErrorMessage>
           </FormControl>
           <FormControl
             isInvalid={!!(errors.category && touched.category)}

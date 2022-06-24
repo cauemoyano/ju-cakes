@@ -12,6 +12,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
+import { useProducts } from "../../context/ProductsContext";
 
 const Hero = () => {
   return (

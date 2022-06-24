@@ -15,13 +15,18 @@ import { Category } from "../../../utilities/Types/Category";
 import SimpleModal from "../../layout/modal/SimpleModal";
 import CategoryForm from "./AdminCategoryForm/AdminCategoryForm";
 
+type Props = {
+  initialValues: Category;
+  handleClose: () => void;
+  setLoading: (state: boolean) => void;
+};
+
 const CategoryModal = ({
   isOpen,
   initialValues,
   handleClose,
-}: { initialValues: Category; handleClose: () => void } & Required<
-  Pick<UseDisclosureProps, "isOpen">
->) => {
+  setLoading,
+}: Props & Required<Pick<UseDisclosureProps, "isOpen">>) => {
   const { createOrUpdateCategory, updateCategories, uploadImage } =
     useProducts();
   const { setError, errorToast } = useErrorHandler();
@@ -47,6 +52,7 @@ const CategoryModal = ({
     },
     actions: FormikHelpers<Category>
   ) => {
+    setLoading(true);
     try {
       if (!imageFile && !initialValues.image) {
         throw new Error("Imagem é obrigatória.");
@@ -81,6 +87,7 @@ const CategoryModal = ({
       errorToast(err?.message);
     } finally {
       actions.setSubmitting(false);
+      setLoading(false);
     }
   };
 

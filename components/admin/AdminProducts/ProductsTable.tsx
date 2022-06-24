@@ -24,7 +24,7 @@ import AlertModal from "../../layout/modal/AlertModal";
 import ProductModal from "./ProductModal";
 
 const initialValues: Product = {
-  productName: "",
+  name: "",
   description: "",
   ingredients: "",
   price: 0,
@@ -119,7 +119,7 @@ const ProductsTable = () => {
                       <Image src={product.image} maxWidth="100px" mr={4} />
                     )}
 
-                    <Text fontWeight={600}>{product.productName}</Text>
+                    <Text fontWeight={600}>{product.name}</Text>
                   </Flex>
                 </Td>
                 <Td display={{ base: "block", md: "none" }}>

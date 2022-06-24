@@ -4,7 +4,7 @@ export type ProductVariant = "20 Unidades" | "30 Unidades" | "50 Unidades";
 
 export type Product = {
   id?: string;
-  productName: string;
+  name: string;
   category?: string;
   description?: string;
   ingredients?: string;

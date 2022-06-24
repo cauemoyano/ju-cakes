@@ -15,13 +15,17 @@ import { Product } from "../utilities/Types/Products";
 type ProductsContextType = {
   createOrUpdateProduct: (data: Product, uid?: string) => Promise<void>;
   createOrUpdateCategory: (data: Category, uid?: string) => Promise<void>;
-  categories: Category[];
+  categories: {
+    data: Category[];
+    loading: boolean;
+  };
   products: Product[];
   updateCategories: () => Promise<void>;
   updateProducts: () => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
   uploadImage: (file: File) => Promise<Response | undefined>;
+  callTestMock: () => () => void;
 };
 
 const ProductsContext = createContext<ProductsContextType | {}>({});
@@ -39,7 +43,10 @@ export const ProductsProvider = ({
     useFirebaseStorage();
   const { uploadFile } = useCloudinary();
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<{
+    data: Category[];
+    loading: boolean;
+  }>({ data: [], loading: true });
 
   useEffect(() => {
     (async () => {
@@ -67,8 +74,9 @@ export const ProductsProvider = ({
   }, []);
 
   const updateCategories = useCallback(async () => {
-    const categories = (await getCollection("categories")) as Category[];
-    setCategories(categories);
+    setCategories({ ...categories, loading: true });
+    const data = (await getCollection("categories")) as Category[];
+    setCategories({ data, loading: false });
   }, []);
 
   const updateProducts = useCallback(async () => {
@@ -86,7 +94,7 @@ export const ProductsProvider = ({
   const uploadImage = useCallback(async (file: File) => {
     try {
       const data = await uploadFile(file);
-      return data.json();
+      return data;
     } catch (error) {
       setError(error);
     }

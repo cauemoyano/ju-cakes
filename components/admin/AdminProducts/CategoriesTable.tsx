@@ -16,7 +16,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useProducts } from "../../../context/ProductsContext";
 import useErrorHandler from "../../../services/useErrorHandler/useErrorHandler";
 import { Category } from "../../../utilities/Types/Category";
@@ -34,9 +34,11 @@ const CategoriesTable = () => {
     onClose: onDeleteClose,
   } = useDisclosure();
   const { setError } = useErrorHandler();
-  const { categories, deleteCategory, updateCategories } = useProducts();
+  const { categories, deleteCategory, updateCategories, callTestMock } =
+    useProducts();
   const [modalInputs, setModalInputs] = useState<Category>(initialValues);
   const [deleteId, setDeleteId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleEdit = (category: Category) => {
     setModalInputs(category);
@@ -55,6 +57,7 @@ const CategoriesTable = () => {
 
   const handleDelete = async () => {
     if (!deleteId) return;
+    setLoading(true);
     try {
       await deleteCategory(deleteId);
       await updateCategories();
@@ -68,6 +71,8 @@ const CategoriesTable = () => {
       clearDelete();
     } catch (err) {
       setError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,59 +88,75 @@ const CategoriesTable = () => {
         onClick={onOpen}
         mb={4}
         colorScheme="primaryNumbered"
+        disabled={loading}
       >
         Adicionar Categoria
       </Button>
       <TableContainer bg="gray.50" overflow="auto">
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th fontFamily={"inter"} color="primary.dark">
-                Categoria
-              </Th>
-              <Th color="transparent">Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {categories.map((category) => (
-              <Tr key={category.id}>
-                <Td>
-                  <Flex direction="row" alignItems="center">
-                    {category?.image && (
-                      <Image src={category.image} maxWidth="100px" mr={4} />
-                    )}
-                    <Text fontWeight={600}>{category.name}</Text>
-                  </Flex>
-                </Td>
-                <Td>
-                  <HStack>
-                    <IconButton
-                      onClick={() => handleEdit(category)}
-                      variant="ghost"
-                      colorScheme={"cyan"}
-                      size="lg"
-                      aria-label="Editar produto"
-                      icon={<EditIcon />}
-                    />
-                    <IconButton
-                      onClick={() => handleDeleteModal(category.id!)}
-                      variant="ghost"
-                      colorScheme={"red"}
-                      size="lg"
-                      aria-label="Deletar produto"
-                      icon={<DeleteIcon />}
-                    />
-                  </HStack>
-                </Td>
+        {categories.loading && (
+          <Text data-testid="loading-categories">Carregando categorias...</Text>
+        )}
+        {!categories.loading && !categories.data.length && (
+          <Text data-testid="no-categories">
+            Não há categorias para exibir.
+          </Text>
+        )}
+        {!categories.loading && categories.data.length && (
+          <Table variant="simple">
+            <Thead>
+              <Tr>
+                <Th fontFamily={"inter"} color="primary.dark">
+                  Categoria
+                </Th>
+                <Th color="transparent">Actions</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody data-testid="categories-wrapper">
+              {categories.data.map((category) => (
+                <Tr key={category.id} data-testid={category.id}>
+                  <Td>
+                    <Flex direction="row" alignItems="center">
+                      {category?.image && (
+                        <Image src={category.image} maxWidth="100px" mr={4} />
+                      )}
+                      <Text fontWeight={600}>{category.name}</Text>
+                    </Flex>
+                  </Td>
+                  <Td>
+                    <HStack>
+                      <IconButton
+                        onClick={() => handleEdit(category)}
+                        variant="ghost"
+                        colorScheme={"cyan"}
+                        size="lg"
+                        aria-label="Editar produto"
+                        icon={<EditIcon />}
+                        data-testid="cat-edit-btn"
+                        disabled={loading}
+                      />
+                      <IconButton
+                        onClick={() => handleDeleteModal(category.id!)}
+                        variant="ghost"
+                        colorScheme={"red"}
+                        size="lg"
+                        aria-label="Deletar produto"
+                        icon={<DeleteIcon />}
+                        disabled={loading}
+                        data-testid="cat-delete-btn"
+                      />
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        )}
       </TableContainer>
       <CategoryModal
         isOpen={isOpen}
         initialValues={modalInputs}
         handleClose={handleClose}
+        setLoading={setLoading}
       />
       <AlertModal
         isOpen={isDeleteOpen}

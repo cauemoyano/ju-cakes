@@ -23,6 +23,7 @@ export const useFirebaseStorage = () => {
     []
   );
   const getCollection = useCallback(async (collectionName: string) => {
+    console.log("getting collection" + collectionName);
     const snapshot = await getDocs(collection(db, collectionName));
     const documents = snapshot.docs.map((doc) => ({
       ...doc.data(),

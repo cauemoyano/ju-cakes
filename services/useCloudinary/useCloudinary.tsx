@@ -1,17 +1,22 @@
 import React, { useCallback } from "react";
 
+export const uploadFileUrl =
+  "https://api.cloudinary.com/v1_1/caue-moyano/image/upload";
+
 const useCloudinary = () => {
-  const uploadFile = useCallback((file: File) => {
+  const uploadFile = useCallback(async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append(
       "upload_preset",
       process.env.NEXT_PUBLIC_CLOUDINARY_PRESET as string
     );
-    return fetch("https://api.cloudinary.com/v1_1/caue-moyano/image/upload", {
+    const res = await fetch(uploadFileUrl, {
       method: "POST",
       body: formData,
     });
+
+    return res.json();
   }, []);
   return { uploadFile };
 };
