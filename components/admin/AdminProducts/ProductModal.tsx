@@ -66,7 +66,7 @@ const ProductModal = ({
       await createOrUpdateProduct({ ...data }, initialValues?.id);
       await updateProducts();
       toast({
-        title: "Produto salvo.",
+        title: "Produto salvo",
         description: "O Produto foi salvo com sucesso.",
         status: "success",
         duration: 3000,

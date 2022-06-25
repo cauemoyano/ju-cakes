@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik, FormikHelpers } from "formik";
 import React, { ChangeEventHandler } from "react";
+import { useProducts } from "../../../../context/ProductsContext";
 import { ProductFormType } from "../../../../utilities/Types/Products";
 import { ProductSchema } from "../../../../utilities/yup/Schemas";
 
@@ -26,6 +27,7 @@ const ProductForm = ({
   handleFileChange: ChangeEventHandler<HTMLInputElement>;
   imageSrc: string | ArrayBuffer | null;
 } & ProductFormType) => {
+  const { categories } = useProducts();
   return (
     <Formik
       initialValues={initialValues}
@@ -35,7 +37,7 @@ const ProductForm = ({
       {({ isSubmitting, errors, touched, values, handleChange }) => (
         <Form>
           <FormControl isInvalid={!!(errors.name && touched.name)} mb={4}>
-            <FormLabel htmlFor="name">Nome</FormLabel>
+            <FormLabel htmlFor="productName">Nome</FormLabel>
             <Input
               name="name"
               id="productName"
@@ -49,6 +51,35 @@ const ProductForm = ({
             isInvalid={!!(errors.category && touched.category)}
             mb={4}
           >
+            <FormLabel htmlFor="category">Categoria</FormLabel>
+            <Select
+              name="category"
+              id="category"
+              value={values.category}
+              onChange={handleChange}
+            >
+              {categories.loading && (
+                <option value="" data-testid="loading-cat-options">
+                  Carregando categorias
+                </option>
+              )}
+              {!categories.loading && categories.data.length === 0 && (
+                <option value="" data-testid="no-category-options">
+                  Não há categorias para selecionar
+                </option>
+              )}
+              {!categories.loading &&
+                categories.data.length > 0 &&
+                categories.data.map((cat) => (
+                  <option
+                    key={cat.id}
+                    data-testid="category-option"
+                    value={cat.name}
+                  >
+                    {cat.name}
+                  </option>
+                ))}
+            </Select>
             <FormLabel htmlFor="category">Categoria</FormLabel>
             <Input
               name="category"

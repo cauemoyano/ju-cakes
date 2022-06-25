@@ -19,7 +19,10 @@ type ProductsContextType = {
     data: Category[];
     loading: boolean;
   };
-  products: Product[];
+  products: {
+    data: Product[];
+    loading: boolean;
+  };
   updateCategories: () => Promise<void>;
   updateProducts: () => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
@@ -42,7 +45,13 @@ export const ProductsProvider = ({
   const { updateDoc, createDoc, getCollection, deleteDocument } =
     useFirebaseStorage();
   const { uploadFile } = useCloudinary();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<{
+    data: Product[];
+    loading: boolean;
+  }>({
+    data: [],
+    loading: true,
+  });
   const [categories, setCategories] = useState<{
     data: Category[];
     loading: boolean;
@@ -80,8 +89,9 @@ export const ProductsProvider = ({
   }, []);
 
   const updateProducts = useCallback(async () => {
-    const products = (await getCollection("products")) as Product[];
-    setProducts(products);
+    setProducts({ ...products, loading: true });
+    const data = (await getCollection("products")) as Product[];
+    setProducts({ data, loading: false });
   }, []);
 
   const deleteCategory = (id: string) => {

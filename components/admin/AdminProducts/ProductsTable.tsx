@@ -27,6 +27,7 @@ const initialValues: Product = {
   name: "",
   description: "",
   ingredients: "",
+  category: "",
   price: 0,
   image: "",
   variant: "20 Unidades",
@@ -93,6 +94,12 @@ const ProductsTable = () => {
         Adicionar Produto
       </Button>
       <TableContainer bg="gray.50" overflow="auto">
+        {products.loading && (
+          <Text data-testid="loading-products">Carregando produtos...</Text>
+        )}
+        {!products.loading && !products.data.length && (
+          <Text data-testid="no-products">Não há produtos para exibir</Text>
+        )}
         <Table variant="simple">
           <Thead>
             <Tr>
@@ -111,8 +118,8 @@ const ProductsTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {products.map((product) => (
-              <Tr key={product.id}>
+            {products.data.map((product) => (
+              <Tr key={product.id} data-testid={product.id}>
                 <Td>
                   <Flex direction="row" alignItems="center">
                     {product?.image && (
@@ -131,6 +138,7 @@ const ProductsTable = () => {
                       size="lg"
                       aria-label="Editar produto"
                       icon={<EditIcon />}
+                      data-testid="prod-edit-btn"
                     />
                     <IconButton
                       onClick={() => handleDeleteModal(product.id!)}
@@ -139,6 +147,7 @@ const ProductsTable = () => {
                       size="lg"
                       aria-label="Deletar produto"
                       icon={<DeleteIcon />}
+                      data-testid="prod-delete-btn"
                     />
                   </HStack>
                 </Td>
