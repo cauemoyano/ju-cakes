@@ -5,7 +5,7 @@ type Props = {
   [x: string]: any;
 };
 
-const ProductVariantBox = (props: Props) => {
+const VariantBox = (props: Props) => {
   const { getInputProps, getCheckboxProps } = useRadio(props);
 
   const input = getInputProps();
@@ -37,4 +37,4 @@ const ProductVariantBox = (props: Props) => {
   );
 };
 
-export default ProductVariantBox;
+export default VariantBox;

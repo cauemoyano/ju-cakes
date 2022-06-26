@@ -1,24 +1,16 @@
-import { AddIcon } from "@chakra-ui/icons";
 import {
-  Button,
   Container,
   Heading,
-  HStack,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
-  useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
 import React from "react";
 
-import AlertModal from "../../layout/modal/AlertModal";
-import SimpleModal from "../../layout/modal/SimpleModal";
 import CategoriesTable from "./CategoriesTable";
-import ProductModal from "./ProductModal";
+
 import ProductsTable from "./ProductsTable";
 
 const AdminProducts = () => {

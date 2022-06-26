@@ -11,8 +11,10 @@ import { ReactNode } from "react";
 import { IconType } from "react-icons";
 import { BsCalendar2Date, BsChatQuote } from "react-icons/bs";
 import { FiHome, FiUsers, FiPackage, FiLayers } from "react-icons/fi";
+import { CalendarProvider } from "../../context/CalendarContext";
+import { ProductsProvider } from "../../context/ProductsContext";
 import CustomLink from "../primitives/CustomLink";
-import AdminCalendar from "./AdminCalendar";
+import AdminCalendar from "./AdminCalendar/AdminCalendar";
 import AdminCustomer from "./AdminCustomer/AdminCustomer";
 import AdminHome from "./AdminHome";
 import AdminOrders from "./AdminOrders";
@@ -42,13 +44,21 @@ export const LinkItems: Array<LinkItemProps> = [
     name: "Produtos",
     icon: FiPackage,
     path: "produtos",
-    component: <AdminProducts />,
+    component: (
+      <ProductsProvider>
+        <AdminProducts />
+      </ProductsProvider>
+    ),
   },
   {
     name: "Agenda",
     icon: BsCalendar2Date,
     path: "agenda",
-    component: <AdminCalendar />,
+    component: (
+      <CalendarProvider>
+        <AdminCalendar />
+      </CalendarProvider>
+    ),
   },
   {
     name: "Ordens",

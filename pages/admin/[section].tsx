@@ -15,8 +15,6 @@ const Admin = () => {
   const router = useRouter();
   const { user } = useAuth();
 
-  console.log("admin render");
-
   /*  useEffect(() => {
     if (!user || !user?.admin) router.push("/");
   }, [user]);
@@ -42,9 +40,7 @@ const Admin = () => {
   const subPagesBox = useMemo(
     () => (
       <Box ml={{ base: 0, md: 60 }} p="4">
-        <CustomerProvider>
-          <ProductsProvider>{cmp}</ProductsProvider>
-        </CustomerProvider>
+        <CustomerProvider>{cmp}</CustomerProvider>
       </Box>
     ),
     [cmp]

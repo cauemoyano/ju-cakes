@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import ProductVariantBox from "../primitives/ProductVariantBox";
+import VariantBox from "../primitives/VariantBox";
 
 const ProductVariantSelection = () => {
   const options = ["20 Unidades", "30 unidades", "50 unidades"];
@@ -27,9 +27,9 @@ const ProductVariantSelection = () => {
         {options.map((value) => {
           const radio = getRadioProps({ value });
           return (
-            <ProductVariantBox key={value} {...radio}>
+            <VariantBox key={value} {...radio}>
               {value}
-            </ProductVariantBox>
+            </VariantBox>
           );
         })}
       </HStack>
