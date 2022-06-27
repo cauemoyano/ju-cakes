@@ -81,7 +81,7 @@ const CalendarTable = () => {
 
   return (
     <>
-      <Heading as="h2" fontFamily={"inter"} fontSize="xl" mb={4}>
+      <Heading as="h2" fontFamily={"inter"} fontSize="xl">
         Datas indisponiveis
       </Heading>
       <Button
@@ -89,6 +89,7 @@ const CalendarTable = () => {
         onClick={onOpen}
         mb={4}
         colorScheme="primaryNumbered"
+        width={"fit-content"}
       >
         Adicionar Data
       </Button>

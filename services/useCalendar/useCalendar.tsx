@@ -30,24 +30,24 @@ const useCalendar = () => {
       const { periods } = data;
       if (uid) {
         if (!periods.length) {
-          return deleteDocument(uid, "calendar");
+          return deleteDocument(uid, "calendar_dates");
         }
-        return updateDoc("calendar", uid, data);
+        return updateDoc("calendar_dates", uid, data);
       }
 
-      return createDoc("calendar", data);
+      return createDoc("calendar_dates", data);
     },
     []
   );
 
   const updateCalendar = useCallback(async () => {
     setDates({ ...dates, loading: true });
-    const data = (await getCollection("calendar")) as CalendarItem[];
+    const data = (await getCollection("calendar_dates")) as CalendarItem[];
     setDates({ data, loading: false });
   }, []);
 
   const deleteCalendarItem = (id: string) => {
-    return deleteDocument(id, "calendar");
+    return deleteDocument(id, "calendar_dates");
   };
 
   return {
