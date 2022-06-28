@@ -3,12 +3,14 @@ import {
   CalendarContext,
   CalendarContextType,
 } from "../../context/CalendarContext";
-import { CalendarItem } from "../../utilities/Types/Calendar";
+import { CalendarDay, CalendarItem } from "../../utilities/Types/Calendar";
 import useErrorHandler from "../useErrorHandler/useErrorHandler";
 import { useFirebaseStorage } from "../useFirebaseStorage/useFirebaseStorage";
 
+const MILISECONDS = 1000;
+
 const useCalendar = () => {
-  const { dates, setDates } = useContext(
+  const { dates, setDates, days, setDays } = useContext(
     CalendarContext as Context<CalendarContextType>
   );
   const { updateDoc, createDoc, getCollection, deleteDocument } =
@@ -19,6 +21,7 @@ const useCalendar = () => {
     (async () => {
       try {
         await updateCalendar();
+        await getCalendarDays();
       } catch (error) {
         setError(error);
       }
@@ -40,14 +43,38 @@ const useCalendar = () => {
     []
   );
 
+  const updateCalendarDay = useCallback((data: CalendarDay, uid: string) => {
+    return updateDoc("calendar_days", uid, data);
+  }, []);
+
   const updateCalendar = useCallback(async () => {
     setDates({ ...dates, loading: true });
     const data = (await getCollection("calendar_dates")) as CalendarItem[];
     setDates({ data, loading: false });
   }, []);
+  const getCalendarDays = useCallback(async () => {
+    setDays({ ...days, loading: true });
+    const data = (await getCollection("calendar_days")) as CalendarDay[];
+    setDays({ data, loading: false });
+  }, []);
 
   const deleteCalendarItem = (id: string) => {
     return deleteDocument(id, "calendar_dates");
+  };
+
+  const getDateFromFirebase = (seconds: number) =>
+    new Date(seconds * MILISECONDS);
+
+  const padTo2Digits = (num: number) => {
+    return num.toString().padStart(2, "0");
+  };
+
+  const formatDate = (date: Date) => {
+    return [
+      padTo2Digits(date.getDate()),
+      padTo2Digits(date.getMonth() + 1),
+      date.getFullYear(),
+    ].join("/");
   };
 
   return {
@@ -55,6 +82,11 @@ const useCalendar = () => {
     updateCalendar,
     deleteCalendarItem,
     dates,
+    updateCalendarDay,
+    getCalendarDays,
+    days,
+    getDateFromFirebase,
+    formatDate,
   };
 };
 

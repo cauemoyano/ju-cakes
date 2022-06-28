@@ -12,8 +12,8 @@ import ptBR from "date-fns/locale/pt-BR";
 registerLocale("ptBR", ptBR);
 
 import "react-datepicker/dist/react-datepicker.css";
-import VariantBox from "../../primitives/VariantBox";
 import VariantCheckBox from "../../primitives/VariantCheckBox";
+import useCalendar from "../../../services/useCalendar/useCalendar";
 
 type Props = {
   date: Date | null;
@@ -23,6 +23,7 @@ type Props = {
 };
 const CalendarBuilder = ({ date, setDate, periods, setPeriods }: Props) => {
   const options = ["Manhã", "Tarde"];
+  const { days } = useCalendar();
 
   const { getCheckboxProps } = useCheckboxGroup({
     defaultValue: periods,
@@ -38,6 +39,24 @@ const CalendarBuilder = ({ date, setDate, periods, setPeriods }: Props) => {
       setPeriods([...periods, value]);
     }
   };
+  const isAvailable = (date: Date) => {
+    const day = date.getDay();
+    const dbDay = days.data.find((d) => d.weekday === day);
+    if (!dbDay) throw new Error();
+    if (dbDay.periods.length > 0) {
+      return true;
+    }
+    return false;
+  };
+
+  const periodUnavailable = (period: string) => {
+    if (!date) return false;
+    const day = date.getDay();
+    const dbDay = days.data.find((d) => d.weekday === day);
+    console.log(period, dbDay?.periods.includes(period));
+    return !dbDay?.periods.includes(period);
+  };
+
   return (
     <VStack
       py={4}
@@ -81,6 +100,7 @@ const CalendarBuilder = ({ date, setDate, periods, setPeriods }: Props) => {
         minDate={new Date()}
         excludeDates={[new Date(), new Date("2002-06-05")]}
         dateFormat="Pp"
+        filterDate={isAvailable}
       />
       <VStack align="center" py={4} overflow="auto">
         <Text fontSize="lg" fontWeight="bold">
@@ -97,6 +117,7 @@ const CalendarBuilder = ({ date, setDate, periods, setPeriods }: Props) => {
                 {...checkbox}
                 isChecked={periods.includes(option)}
                 onChange={handleChange}
+                isDisabled={periodUnavailable(option)}
               />
             );
           })}

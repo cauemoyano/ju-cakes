@@ -1,7 +1,16 @@
-import { Container, Heading, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+  VStack,
+} from "@chakra-ui/react";
 import React from "react";
 import CalendarDaysSelection from "./CalendarDaysSelection";
 import CalendarTable from "./CalendarTable";
+import ScheduleSummary from "./ScheduleSummary";
 
 const AdminCalendar = () => {
   return (
@@ -10,7 +19,14 @@ const AdminCalendar = () => {
         Agenda
       </Heading>
       <VStack align="left" spacing={4}>
-        <CalendarTable />
+        <Flex direction={{ base: "column-reverse", xl: "row" }}>
+          <Box width={{ xl: "60%" }}>
+            <CalendarTable />
+          </Box>
+          <VStack minHeight="300px" mb={6} width={{ xl: "40%" }}>
+            <ScheduleSummary />
+          </VStack>
+        </Flex>
         <CalendarDaysSelection />
       </VStack>
     </Container>

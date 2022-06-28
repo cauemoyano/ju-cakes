@@ -14,58 +14,40 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React, { ChangeEvent } from "react";
+import useCalendar from "../../../services/useCalendar/useCalendar";
+import useErrorHandler from "../../../services/useErrorHandler/useErrorHandler";
 
 type Props = {
-  name: string;
-  periods: string[];
-  weekday: number;
-  id: string;
-  fakeData: {
-    name: string;
-    periods: string[];
-    weekday: number;
-    id: string;
-  }[];
-  setFakeData: React.Dispatch<
-    React.SetStateAction<
-      {
-        name: string;
-        periods: string[];
-        weekday: number;
-        id: string;
-      }[]
-    >
-  >;
+  day: { name: string; periods: string[]; weekday: number; id: string };
+  loading: boolean;
 };
 
-const DaySelectOption = ({
-  name,
-  periods,
-  id,
-  fakeData,
-  setFakeData,
-}: Props) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newData = [...fakeData];
-    const day = fakeData.find((item) => item.id === id);
-    if (!day) return;
-    newData.splice(newData.indexOf(day), 1);
-    const { periods } = day;
-    if (periods.includes(e.target.value)) {
-      const newPeriods = [...periods];
-      newPeriods.splice(newPeriods.indexOf(e.target.value), 1);
-      day.periods = newPeriods;
-    } else {
-      day.periods = [...periods, e.target.value];
-    }
+const DaySelectOption = ({ day, loading }: Props) => {
+  const { updateCalendarDay, getCalendarDays } = useCalendar();
+  const { setError } = useErrorHandler();
+  const { name, id, periods } = day;
 
-    setFakeData([...newData, day]);
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    try {
+      if (periods.includes(e.target.value)) {
+        const newPeriods = [...periods];
+        newPeriods.splice(newPeriods.indexOf(e.target.value), 1);
+        day["periods"] = newPeriods;
+      } else {
+        day["periods"] = [...periods, e.target.value];
+      }
+      await updateCalendarDay(day, id);
+      await getCalendarDays();
+    } catch (error) {
+      setError(error);
+    }
   };
   const morningChecked = periods.includes("Manhã");
   const afternoonChecked = periods.includes("Tarde");
+
   return (
     <Accordion allowToggle>
-      <AccordionItem width="200px" border="0">
+      <AccordionItem width="200px" border="0" m={0}>
         {({ isExpanded }) => (
           <>
             <h3>
@@ -111,24 +93,26 @@ const DaySelectOption = ({
               </AccordionButton>
             </h3>
             <AccordionPanel pb={4}>
-              <CheckboxGroup colorScheme="primaryNumbered" defaultValue={[]}>
-                <Stack spacing={[1, 5]} direction={["column", "row"]}>
-                  <Checkbox
-                    value="Manhã"
-                    isChecked={periods.includes("Manhã")}
-                    onChange={handleChange}
-                  >
-                    Manhã
-                  </Checkbox>
-                  <Checkbox
-                    value="Tarde"
-                    isChecked={periods.includes("Tarde")}
-                    onChange={handleChange}
-                  >
-                    Tarde
-                  </Checkbox>
-                </Stack>
-              </CheckboxGroup>
+              <Stack spacing={[1, 5]} direction={["column", "row"]}>
+                <Checkbox
+                  value="Manhã"
+                  isChecked={morningChecked}
+                  onChange={handleChange}
+                  disabled={loading}
+                  colorScheme="primaryNumbered"
+                >
+                  Manhã
+                </Checkbox>
+                <Checkbox
+                  value="Tarde"
+                  isChecked={afternoonChecked}
+                  onChange={handleChange}
+                  disabled={loading}
+                  colorScheme="primaryNumbered"
+                >
+                  Tarde
+                </Checkbox>
+              </Stack>
             </AccordionPanel>
           </>
         )}

@@ -11,7 +11,6 @@ import React from "react";
 const VariantCheckBox = (props: CheckboxProps) => {
   const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } =
     useCheckbox(props);
-
   return (
     <chakra.label
       cursor="pointer"
@@ -21,8 +20,20 @@ const VariantCheckBox = (props: CheckboxProps) => {
       _focus={{
         boxShadow: "outline",
       }}
-      bg={`${state.isChecked && "primary.light"}`}
-      color={`${state.isChecked && "primary.dark"}`}
+      bg={`${
+        state.isChecked
+          ? "primary.light"
+          : (getInputProps() as any).disabled
+          ? "gray.200"
+          : ""
+      }`}
+      color={`${
+        state.isChecked
+          ? "primary.dark"
+          : (getInputProps() as any).disabled
+          ? "gray.300"
+          : ""
+      }`}
       borderColor={`${state.isChecked && "primary.dark"}`}
       px={5}
       py={3}

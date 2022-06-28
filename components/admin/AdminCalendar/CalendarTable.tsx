@@ -25,7 +25,13 @@ import CalendarModal from "./CalendarModal";
 const initialValues: CalendarItem = { date: null, periods: [] };
 
 const CalendarTable = () => {
-  const { dates, deleteCalendarItem, updateCalendar } = useCalendar();
+  const {
+    dates,
+    deleteCalendarItem,
+    updateCalendar,
+    getDateFromFirebase,
+    formatDate,
+  } = useCalendar();
   const [modalInputs, setModalInputs] = useState<CalendarItem>(initialValues);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -37,12 +43,10 @@ const CalendarTable = () => {
   const toast = useToast();
   const { setError } = useErrorHandler();
 
-  const MILISECONDS = 1000;
-
   const handleEdit = (item: CalendarItem) => {
     setModalInputs({
       ...item,
-      date: new Date((item.date as any).seconds * MILISECONDS),
+      date: getDateFromFirebase((item.date as any).seconds),
     });
     onOpen();
   };
@@ -81,7 +85,7 @@ const CalendarTable = () => {
 
   return (
     <>
-      <Heading as="h2" fontFamily={"inter"} fontSize="xl">
+      <Heading as="h2" fontFamily={"inter"} fontSize="xl" mb={4}>
         Datas indisponiveis
       </Heading>
       <Button
@@ -117,11 +121,11 @@ const CalendarTable = () => {
               {dates.data.map((item) => {
                 const { periods, id } = item;
                 const seconds = (item.date as any).seconds;
-                const date = new Date(seconds * MILISECONDS);
+                const date = getDateFromFirebase(seconds);
                 return (
                   <Tr key={id} data-testid={id}>
                     <Td>
-                      <Text fontWeight={600}>{date.toLocaleString()}</Text>
+                      <Text fontWeight={600}>{formatDate(date)}</Text>
                     </Td>
                     <Td>
                       <Text fontWeight={600}>{periods.join(", ")}</Text>

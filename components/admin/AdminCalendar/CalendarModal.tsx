@@ -35,11 +35,6 @@ const CalendarModal = ({
     setPeriods(initialValues.periods);
   }, [initialValues]);
 
-  /*   useEffect(() => {
-    console.log(initialValues.periods);
-    setPeriods(initialValues.periods);
-  }, [initialValues.periods]);
- */
   const handleSubmit = async () => {
     if (!date) return;
     setLoading(true);
