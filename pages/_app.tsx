@@ -13,15 +13,18 @@ import theme from "../styles/chakra/theme";
 import Layout from "../components/layout/Layout";
 import { AuthUserProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
+import { CheckoutProvider } from "../context/CheckoutContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS={true} theme={theme}>
       <AuthUserProvider>
         <CartProvider>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <CheckoutProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </CheckoutProvider>
         </CartProvider>
       </AuthUserProvider>
     </ChakraProvider>
