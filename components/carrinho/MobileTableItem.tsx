@@ -10,9 +10,26 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React from "react";
+import useCart from "../../services/useCart/useCart";
+import { formatCurrency } from "../../utilities/auxFunctions";
+import { CartItem } from "../../utilities/Types/Cart";
 import NumberInputWithButtonControl from "../primitives/NumberInputWithButtonControl";
 
-const MobileTableItem = () => {
+const MobileTableItem = ({ item }: { item: CartItem }) => {
+  const { name, variant, image, quantity, price } = item;
+  const { updateQuantity, removeItem } = useCart();
+
+  const handleChange = (type: "increase" | "decrease") => {
+    const changed = { ...item };
+    if (type === "increase") {
+      changed.quantity = quantity + 1;
+      updateQuantity(changed);
+    }
+    if (type === "decrease") {
+      changed.quantity = quantity - 1;
+      updateQuantity(changed);
+    }
+  };
   return (
     <VStack pt={4} as="li" position="relative">
       <IconButton
@@ -24,16 +41,17 @@ const MobileTableItem = () => {
         position="absolute"
         top={0}
         right={0}
+        onClick={() => removeItem(item)}
       />
       <Flex alignItems="center" pb={2}>
         <Box width="50%" maxWidth="150px">
-          <Image src="/brownie-product-page.png" alt="product name" />
+          <Image src={image} alt={name} />
         </Box>
         <VStack width="50%" align="left" px={4}>
           <Heading as="h3" fontSize="xl">
-            Brownie de morango e recheio de doce de leite
+            {name}
           </Heading>
-          <Text fontSize="md">20 Unidades</Text>
+          <Text fontSize="md">{variant}</Text>
         </VStack>
       </Flex>
       <Divider />
@@ -46,7 +64,11 @@ const MobileTableItem = () => {
         <Text fontSize="lg" fontWeight="bold">
           Quantidade
         </Text>
-        <NumberInputWithButtonControl />
+        <NumberInputWithButtonControl
+          value={quantity}
+          handleDecrease={() => handleChange("decrease")}
+          handleIncrease={() => handleChange("increase")}
+        />
       </Flex>
       <Divider />
       <Flex
@@ -56,11 +78,9 @@ const MobileTableItem = () => {
         py={2}
       >
         <Text fontSize="lg">
-          <strong>Total</strong> (2 items)
+          <strong>Total</strong> ({quantity} items)
         </Text>
-        <Text fontSize="lg">
-          <strong>R$</strong> 50,00
-        </Text>
+        <Text fontSize="lg">{formatCurrency(quantity * price)}</Text>
       </Flex>
       <Box height="3px" w="full" bg="primary.dark"></Box>
     </VStack>

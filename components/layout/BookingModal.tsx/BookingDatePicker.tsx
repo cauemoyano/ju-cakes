@@ -5,12 +5,14 @@ import ptBR from "date-fns/locale/pt-BR";
 registerLocale("ptBR", ptBR);
 
 import "react-datepicker/dist/react-datepicker.css";
+import useCalendar from "../../../services/useCalendar/useCalendar";
 
 type Props = {
   date: Date | null;
   setDate: Dispatch<SetStateAction<Date | null>>;
+  isAvailable: (date: Date) => boolean;
 };
-const BookingDatePicker = ({ date, setDate }: Props) => {
+const BookingDatePicker = ({ date, setDate, isAvailable }: Props) => {
   return (
     <Box
       py={4}
@@ -46,17 +48,14 @@ const BookingDatePicker = ({ date, setDate }: Props) => {
       }}
     >
       <DatePicker
-        /*       dateFormat={"dd/MM/yy"} */
         selected={date}
         onChange={(date: Date) => setDate(date)}
         locale="ptBR"
         inline
         minDate={new Date()}
         excludeDates={[new Date(), new Date("2002-06-05")]}
-        showTimeSelect
-        timeFormat="p"
         dateFormat="Pp"
-        /*  timeIntervals={15} */
+        filterDate={isAvailable}
       />
     </Box>
   );

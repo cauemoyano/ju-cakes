@@ -1,6 +1,9 @@
 import { FormikHelpers } from "formik";
 
-export type ProductVariant = "20 Unidades" | "30 Unidades" | "50 Unidades";
+export type ProductVariant = {
+  name: "20 Unidades" | "30 Unidades" | "50 Unidades";
+  price: number;
+};
 
 export type Product = {
   id?: string;
@@ -8,13 +11,15 @@ export type Product = {
   category?: string;
   description?: string;
   ingredients?: string;
-  price?: number;
   image?: string;
-  variant?: ProductVariant;
+  variants?: ProductVariant[];
+  published?: boolean;
 };
 
 export interface ProductFormType {
   initialValues: Product;
+  published?: boolean;
+  setPublished: React.Dispatch<React.SetStateAction<boolean>>;
   handleSubmit: (
     values: Product,
     formikHelpers: FormikHelpers<Product>

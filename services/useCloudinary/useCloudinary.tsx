@@ -1,6 +1,8 @@
 import React, { useCallback } from "react";
 
-export const uploadFileUrl =
+/* export const uploadFileUrl =
+  "https://res.cloudinary.com/caue-moyano/image/upload/c_scale,h_512,w_512";
+ */ export const uploadFileUrl =
   "https://api.cloudinary.com/v1_1/caue-moyano/image/upload";
 
 const useCloudinary = () => {

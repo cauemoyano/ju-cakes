@@ -23,7 +23,7 @@ import { Category } from "../../../utilities/Types/Category";
 import AlertModal from "../../layout/modal/AlertModal";
 import CategoryModal from "./CategoryModal";
 
-const initialValues: Category = { name: "", image: "" };
+const initialValues: Category = { name: "", image: "", published: true };
 
 const CategoriesTable = () => {
   const toast = useToast();
@@ -34,8 +34,7 @@ const CategoriesTable = () => {
     onClose: onDeleteClose,
   } = useDisclosure();
   const { setError } = useErrorHandler();
-  const { categories, deleteCategory, updateCategories, callTestMock } =
-    useProducts();
+  const { categories, deleteCategory, updateCategories } = useProducts();
   const [modalInputs, setModalInputs] = useState<Category>(initialValues);
   const [deleteId, setDeleteId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -108,6 +107,13 @@ const CategoriesTable = () => {
                 <Th fontFamily={"inter"} color="primary.dark">
                   Categoria
                 </Th>
+                <Th
+                  fontFamily={"inter"}
+                  color="primary.dark"
+                  textAlign="center"
+                >
+                  Publicado
+                </Th>
                 <Th color="transparent">Actions</Th>
               </Tr>
             </Thead>
@@ -121,6 +127,9 @@ const CategoriesTable = () => {
                       )}
                       <Text fontWeight={600}>{category.name}</Text>
                     </Flex>
+                  </Td>
+                  <Td textAlign="center">
+                    {category.published ? "Sim" : "Não"}
                   </Td>
                   <Td>
                     <HStack>

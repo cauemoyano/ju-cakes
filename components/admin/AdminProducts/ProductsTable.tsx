@@ -28,9 +28,9 @@ const initialValues: Product = {
   description: "",
   ingredients: "",
   category: "",
-  price: 0,
   image: "",
-  variant: "20 Unidades",
+  variants: [],
+  published: true,
 };
 
 const ProductsTable = () => {
@@ -42,7 +42,7 @@ const ProductsTable = () => {
     onClose: onDeleteClose,
   } = useDisclosure();
   const { setError } = useErrorHandler();
-  const { products, deleteProduct, updateProducts } = useProducts();
+  const { products, deleteProduct, updateProducts, categories } = useProducts();
   const [modalInputs, setModalInputs] = useState<Product>(initialValues);
   const [deleteId, setDeleteId] = useState("");
 
@@ -83,6 +83,11 @@ const ProductsTable = () => {
     setDeleteId("");
     onDeleteClose();
   };
+
+  const getCategoryName = (id: string) => {
+    const cat = categories.data.find((c) => c.id === id);
+    return cat?.name;
+  };
   return (
     <>
       <Button
@@ -109,7 +114,10 @@ const ProductsTable = () => {
               <Th display={{ base: "block", md: "none" }} color="transparent">
                 Actions
               </Th>
-              <Th fontFamily={"inter"} color="primary.dark">
+              <Th fontFamily={"inter"} color="primary.dark" textAlign="center">
+                Publicado
+              </Th>
+              <Th fontFamily={"inter"} color="primary.dark" textAlign="center">
                 Categoria
               </Th>
               <Th display={{ base: "none", md: "block" }} color="transparent">
@@ -129,7 +137,7 @@ const ProductsTable = () => {
                     <Text fontWeight={600}>{product.name}</Text>
                   </Flex>
                 </Td>
-                <Td display={{ base: "block", md: "none" }}>
+                <Td display={{ base: "table-cell", md: "none" }}>
                   <HStack>
                     <IconButton
                       onClick={() => handleEdit(product)}
@@ -151,8 +159,11 @@ const ProductsTable = () => {
                     />
                   </HStack>
                 </Td>
-                <Td>{product.category}</Td>
-                <Td display={{ base: "none", md: "block" }}>
+                <Td textAlign="center">{product.published ? "Sim" : "Não"}</Td>
+                <Td textAlign="center">
+                  {getCategoryName(product.category as string)}
+                </Td>
+                <Td display={{ base: "none", md: "table-cell" }}>
                   <HStack>
                     <IconButton
                       onClick={() => handleEdit(product)}

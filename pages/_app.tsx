@@ -12,14 +12,17 @@ import "@fontsource/inter/800.css";
 import theme from "../styles/chakra/theme";
 import Layout from "../components/layout/Layout";
 import { AuthUserProvider } from "../context/AuthContext";
+import { CartProvider } from "../context/CartContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS={true} theme={theme}>
       <AuthUserProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <CartProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </CartProvider>
       </AuthUserProvider>
     </ChakraProvider>
   );

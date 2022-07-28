@@ -10,14 +10,13 @@ import { Box } from "@chakra-ui/react";
 import CategoryMainCard from "../card/CategoryMainCard";
 import useViewportChecker from "../../utilities/hooks/useViewportChecker";
 import ProductCard from "../card/ProductCard";
+import { Product } from "../../utilities/Types/Products";
 
-const cardItems = [
-  { title: "Pao de Mel", image: "/products-card.png" },
-  { title: "Dia das Maes", image: "/products-card.png" },
-  /*   { title: "Dia das Maes", image: "/products-card.png" }, */
-];
-
-export default function ProductsCarousel() {
+export default function ProductsCarousel({
+  products,
+}: {
+  products: Product[];
+}) {
   const { mediaQueries } = useViewportChecker();
 
   return (
@@ -56,18 +55,11 @@ export default function ProductsCarousel() {
             },
           }}
         >
-          <SwiperSlide tag="li">
-            <ProductCard />
-          </SwiperSlide>
-          <SwiperSlide tag="li">
-            <ProductCard />
-          </SwiperSlide>
-          <SwiperSlide tag="li">
-            <ProductCard />
-          </SwiperSlide>
-          <SwiperSlide tag="li">
-            <ProductCard />
-          </SwiperSlide>
+          {products.map((product) => (
+            <SwiperSlide tag="li" key={product.id}>
+              <ProductCard {...product} />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </Box>
     </>

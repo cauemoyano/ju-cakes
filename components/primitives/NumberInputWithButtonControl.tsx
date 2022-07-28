@@ -1,24 +1,30 @@
 import { AddIcon, MinusIcon } from "@chakra-ui/icons";
-import { Button, HStack, IconButton, Input, Text } from "@chakra-ui/react";
+import {
+  BoxProps,
+  Button,
+  Flex,
+  HStack,
+  IconButton,
+  Input,
+  Text,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 
-const NumberInputWithButtonControl = () => {
-  const [value, setValue] = useState(1);
-
-  const handleChange = (type: string) => {
-    if (type === "increase") {
-      setValue(value + 1);
-    }
-    if (type === "decrease" && value > 1) {
-      setValue(value - 1);
-    }
-  };
-
+const NumberInputWithButtonControl = ({
+  value,
+  handleDecrease,
+  handleIncrease,
+  ...props
+}: {
+  value: number;
+  handleIncrease: () => void;
+  handleDecrease: () => void;
+} & BoxProps) => {
   return (
-    <HStack spacing={4}>
+    <Flex gap={4} alignItems="center" justifyContent="center">
       <IconButton
         aria-label="Diminuir quantidade"
-        onClick={() => handleChange("decrease")}
+        onClick={handleDecrease}
         isRound={true}
         colorScheme="teal"
         bg="secondary.dark"
@@ -28,14 +34,14 @@ const NumberInputWithButtonControl = () => {
       <Text fontSize="xl">{value}</Text>
       <IconButton
         aria-label="Aumentar quantidade"
-        onClick={() => handleChange("increase")}
+        onClick={handleIncrease}
         isRound={true}
         colorScheme="teal"
         bg="secondary.dark"
         color="light.main"
         icon={<AddIcon />}
       ></IconButton>
-    </HStack>
+    </Flex>
   );
 };
 

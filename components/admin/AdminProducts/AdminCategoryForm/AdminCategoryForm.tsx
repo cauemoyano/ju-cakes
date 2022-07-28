@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -9,6 +10,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Text,
 } from "@chakra-ui/react";
 import { Form, Formik, FormikHelpers } from "formik";
 import React, { ChangeEvent, ChangeEventHandler, useEffect } from "react";
@@ -20,6 +22,8 @@ const CategoryForm = ({
   handleSubmit,
   handleFileChange,
   imageSrc,
+  published,
+  setPublished,
 }: {
   handleFileChange: ChangeEventHandler<HTMLInputElement>;
   imageSrc: string | ArrayBuffer | null;
@@ -56,10 +60,18 @@ const CategoryForm = ({
             />
           </FormControl>
           {imageSrc && (
-            <Box maxWidth="100px">
+            <Box maxWidth="100px" mb={4}>
               <Image src={imageSrc as string} />
             </Box>
           )}
+
+          <Checkbox
+            isChecked={published}
+            onChange={(e) => setPublished(e.target.checked)}
+            colorScheme="primaryNumbered"
+          >
+            Publicado
+          </Checkbox>
 
           <Flex alignItems="center" justifyContent="space-between" mt={8}>
             <Button

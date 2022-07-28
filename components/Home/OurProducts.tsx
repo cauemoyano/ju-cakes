@@ -10,7 +10,11 @@ import {
   useDimensions,
   VStack,
 } from "@chakra-ui/react";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useProducts } from "../../context/ProductsContext";
+import { getCollection } from "../../services/FirebaseStorageService/FirebaseStorageService";
+import { Category } from "../../utilities/Types/Category";
 import CategoryMainCard from "../card/CategoryMainCard";
 
 const cardItems = [
@@ -19,18 +23,7 @@ const cardItems = [
   { title: "Dia das Maes", image: "/products-card.png" },
 ];
 
-const OurProducts = () => {
-  const cardsWrapperRef = useRef<HTMLDivElement>(null);
-  /*   const cardsWrapperDimensions = useDimensions(cardsWrapperRef, true); */
-  const [overflow, setOverflow] = useState(false);
-
-  useEffect(() => {
-    if (!cardsWrapperRef.current) return;
-    if (cardsWrapperRef.current.scrollWidth > window.innerWidth) {
-      setOverflow(true);
-    }
-  }, [cardsWrapperRef]);
-
+const OurProducts = ({ categories }: { categories: Category[] }) => {
   return (
     <Box bg="primary.light">
       <Container
@@ -99,13 +92,9 @@ const OurProducts = () => {
                 },
               }}
             >
-              {cardItems.map((card, index) => (
+              {categories.map((card, index) => (
                 <li key={index}>
-                  <CategoryMainCard
-                    key={index}
-                    title={card.title}
-                    image={card.image}
-                  />
+                  <CategoryMainCard key={index} {...card} />
                 </li>
               ))}
             </Box>

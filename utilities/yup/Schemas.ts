@@ -31,9 +31,23 @@ export const ProductSchema = Yup.object().shape({
   category: Yup.string().required("Categoria é obrigatório"),
   description: Yup.string().required("Descrição é obrigatório"),
   ingredients: Yup.string().required("Ingredientes é obrigatório"),
-  price: Yup.number().required("Preço obrigatório"),
-  variant: Yup.string().required("Variante é obrigatório"),
+  variants: Yup.array()
+    .of(
+      Yup.object().shape({
+        name: Yup.string().required("Nome é obrigatório"),
+        price: Yup.number()
+          .required("Preço obrigatório")
+          .min(0, "Preço deve ser positivo"),
+      })
+    )
+    .min(1, "Variante é obrigatório"),
 });
 export const CategorySchema = Yup.object().shape({
   name: Yup.string().required("Nome é obrigatório"),
 });
+/* export const VariantSchema = Yup.object().shape({
+  name: Yup.string().required("Nome é obrigatório"),
+  price: Yup.number()
+    .required("Preço obrigatório")
+    .min(0, "Preço deve ser positivo"),
+}); */

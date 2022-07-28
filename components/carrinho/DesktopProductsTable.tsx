@@ -9,9 +9,11 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import useCart from "../../services/useCart/useCart";
+import { CartItem } from "../../utilities/Types/Cart";
 import DesktopTableItem from "./DesktopTableItem";
 
-const DesktopProductsTable = () => {
+const DesktopProductsTable = ({ cart }: { cart: CartItem[] }) => {
   return (
     <TableContainer flex="1">
       <Table variant="simple">
@@ -30,10 +32,9 @@ const DesktopProductsTable = () => {
           </Tr>
         </Thead>
         <Tbody>
-          <DesktopTableItem />
-          <DesktopTableItem />
-          <DesktopTableItem />
-          <DesktopTableItem />
+          {cart.map((item) => (
+            <DesktopTableItem key={`${item.id}-${item.variant}`} item={item} />
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

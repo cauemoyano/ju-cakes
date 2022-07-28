@@ -5,7 +5,12 @@ import {
 } from "../../context/CalendarContext";
 import { CalendarDay, CalendarItem } from "../../utilities/Types/Calendar";
 import useErrorHandler from "../useErrorHandler/useErrorHandler";
-import { useFirebaseStorage } from "../useFirebaseStorage/useFirebaseStorage";
+import {
+  createDoc,
+  deleteDocument,
+  getCollection,
+  updateDoc,
+} from "../FirebaseStorageService/FirebaseStorageService";
 
 const MILISECONDS = 1000;
 
@@ -13,8 +18,7 @@ const useCalendar = () => {
   const { dates, setDates, days, setDays } = useContext(
     CalendarContext as Context<CalendarContextType>
   );
-  const { updateDoc, createDoc, getCollection, deleteDocument } =
-    useFirebaseStorage();
+
   const { setError } = useErrorHandler();
 
   useEffect(() => {
@@ -77,6 +81,23 @@ const useCalendar = () => {
     ].join("/");
   };
 
+  const isAvailable = (date: Date) => {
+    const day = date.getDay();
+    const dbDay = days.data.find((d) => d.weekday === day);
+    if (!dbDay) throw new Error();
+    if (dbDay.periods.length > 0) {
+      return true;
+    }
+    return false;
+  };
+
+  const periodUnavailable = (period: string, date: Date | null) => {
+    if (!date) return false;
+    const day = date.getDay();
+    const dbDay = days.data.find((d) => d.weekday === day);
+    return !dbDay?.periods.includes(period);
+  };
+
   return {
     createOrUpdateCalendarItem,
     updateCalendar,
@@ -87,6 +108,8 @@ const useCalendar = () => {
     days,
     getDateFromFirebase,
     formatDate,
+    isAvailable,
+    periodUnavailable,
   };
 };
 

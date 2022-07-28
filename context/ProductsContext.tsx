@@ -1,16 +1,24 @@
 import {
   Context,
   createContext,
+  Dispatch,
+  SetStateAction,
   useCallback,
   useContext,
   useEffect,
   useState,
 } from "react";
+import {
+  createDoc,
+  deleteDocument,
+  getCollection,
+  updateDoc,
+} from "../services/FirebaseStorageService/FirebaseStorageService";
 import useCloudinary from "../services/useCloudinary/useCloudinary";
 import useErrorHandler from "../services/useErrorHandler/useErrorHandler";
-import { useFirebaseStorage } from "../services/useFirebaseStorage/useFirebaseStorage";
+
 import { Category } from "../utilities/Types/Category";
-import { Product } from "../utilities/Types/Products";
+import { Product, ProductVariant } from "../utilities/Types/Products";
 
 type ProductsContextType = {
   createOrUpdateProduct: (data: Product, uid?: string) => Promise<void>;
@@ -23,12 +31,13 @@ type ProductsContextType = {
     data: Product[];
     loading: boolean;
   };
+  variants: ProductVariant[];
   updateCategories: () => Promise<void>;
   updateProducts: () => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
   uploadImage: (file: File) => Promise<Response | undefined>;
-  callTestMock: () => () => void;
+  setVariants: Dispatch<SetStateAction<ProductVariant[]>>;
 };
 
 const ProductsContext = createContext<ProductsContextType | {}>({});
@@ -42,8 +51,6 @@ export const ProductsProvider = ({
   children: React.ReactNode;
 }) => {
   const { setError } = useErrorHandler();
-  const { updateDoc, createDoc, getCollection, deleteDocument } =
-    useFirebaseStorage();
   const { uploadFile } = useCloudinary();
   const [products, setProducts] = useState<{
     data: Product[];
@@ -56,6 +63,7 @@ export const ProductsProvider = ({
     data: Category[];
     loading: boolean;
   }>({ data: [], loading: true });
+  const [variants, setVariants] = useState<ProductVariant[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -115,6 +123,7 @@ export const ProductsProvider = ({
       value={{
         products,
         categories,
+        variants,
         createOrUpdateProduct,
         createOrUpdateCategory,
         updateCategories,
@@ -122,6 +131,7 @@ export const ProductsProvider = ({
         deleteCategory,
         deleteProduct,
         uploadImage,
+        setVariants,
       }}
     >
       {children}

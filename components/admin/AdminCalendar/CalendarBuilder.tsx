@@ -23,7 +23,7 @@ type Props = {
 };
 const CalendarBuilder = ({ date, setDate, periods, setPeriods }: Props) => {
   const options = ["Manhã", "Tarde"];
-  const { days } = useCalendar();
+  const { days, isAvailable, periodUnavailable } = useCalendar();
 
   const { getCheckboxProps } = useCheckboxGroup({
     defaultValue: periods,
@@ -38,23 +38,6 @@ const CalendarBuilder = ({ date, setDate, periods, setPeriods }: Props) => {
     } else {
       setPeriods([...periods, value]);
     }
-  };
-  const isAvailable = (date: Date) => {
-    const day = date.getDay();
-    const dbDay = days.data.find((d) => d.weekday === day);
-    if (!dbDay) throw new Error();
-    if (dbDay.periods.length > 0) {
-      return true;
-    }
-    return false;
-  };
-
-  const periodUnavailable = (period: string) => {
-    if (!date) return false;
-    const day = date.getDay();
-    const dbDay = days.data.find((d) => d.weekday === day);
-    console.log(period, dbDay?.periods.includes(period));
-    return !dbDay?.periods.includes(period);
   };
 
   return (
@@ -92,7 +75,6 @@ const CalendarBuilder = ({ date, setDate, periods, setPeriods }: Props) => {
       }}
     >
       <DatePicker
-        /*       dateFormat={"dd/MM/yy"} */
         selected={date}
         onChange={(date: Date) => setDate(date)}
         locale="ptBR"
@@ -117,7 +99,7 @@ const CalendarBuilder = ({ date, setDate, periods, setPeriods }: Props) => {
                 {...checkbox}
                 isChecked={periods.includes(option)}
                 onChange={handleChange}
-                isDisabled={periodUnavailable(option)}
+                isDisabled={periodUnavailable(option, date)}
               />
             );
           })}

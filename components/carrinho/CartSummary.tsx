@@ -13,19 +13,26 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  InputRightElement,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { BsCalendarEvent } from "react-icons/bs";
 import { MdOutlineLocalOffer } from "react-icons/md";
+import { formatCurrency } from "../../utilities/auxFunctions";
 import BookingModal from "../layout/BookingModal.tsx/BookingModal";
 import ButtonWithPopOver from "../primitives/ButtonWithPopOver";
 
-const CartSummary = () => {
+const CartSummary = ({
+  items,
+  subtotal,
+}: {
+  items: number;
+  subtotal: number;
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [date, setDate] = useState<Date | null>(null);
+  const [period, setPeriod] = useState<string | null>(null);
   const finalRef = useRef(null);
   return (
     <Box
@@ -45,11 +52,9 @@ const CartSummary = () => {
       </Heading>
       <Flex as="h3" justifyContent="space-between" mb={2}>
         <Text fontWeight="bold" fontSize="lg">
-          Subtotal (2 items)
+          Subtotal ({items} {items > 1 ? "items" : "item"})
         </Text>
-        <Text fontSize="lg">
-          <strong>R$</strong> 50,00
-        </Text>
+        <Text fontSize="lg">{formatCurrency(subtotal)}</Text>
       </Flex>
       <Divider />
       <Accordion defaultIndex={[0]} allowToggle>
@@ -89,9 +94,7 @@ const CartSummary = () => {
         <Text fontWeight="bold" fontSize="lg">
           Total estimado
         </Text>
-        <Text fontSize="lg">
-          <strong>R$</strong> 50,00
-        </Text>
+        <Text fontSize="lg">{formatCurrency(subtotal)}</Text>
       </Flex>
       <Flex alignItems="center" mt={4} justifyContent="space-between">
         <Button
@@ -104,13 +107,7 @@ const CartSummary = () => {
         </Button>
         <Text fontSize="sm" textAlign="right">
           {date
-            ? `${date.toLocaleDateString("pt-BR")} - ${date.toLocaleTimeString(
-                "pt-BR",
-                {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                }
-              )}h`
+            ? `${date.toLocaleDateString("pt-BR")} - ${period}`
             : "Indefinida"}
         </Text>
       </Flex>
@@ -132,6 +129,8 @@ const CartSummary = () => {
         finalRef={finalRef}
         date={date}
         setDate={setDate}
+        period={period}
+        setPeriod={setPeriod}
       />
     </Box>
   );

@@ -27,6 +27,9 @@ const ProductModal = ({
   const toast = useToast();
   const [imageSrc, setImageSrc] = useState<string | ArrayBuffer | null>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [published, setPublished] = useState<boolean>(
+    initialValues.published || true
+  );
 
   useEffect(() => {
     if (initialValues?.image) {
@@ -58,6 +61,7 @@ const ProductModal = ({
       }
       let data: Product = {
         ...values,
+        published,
       };
       if (image) {
         data = { ...values, image };
@@ -122,6 +126,8 @@ const ProductModal = ({
         handleSubmit={handleSubmit}
         handleFileChange={handleFileChange}
         imageSrc={imageSrc}
+        published={published}
+        setPublished={setPublished}
       />
     </SimpleModal>
   );
