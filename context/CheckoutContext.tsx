@@ -10,6 +10,8 @@ export type DateAndPeriod = {
 export type CheckoutContextType = {
   dateAndPeriod: DateAndPeriod | null;
   setDateAndPeriod: Dispatch<SetStateAction<DateAndPeriod | null>>;
+  paymentRate: "50%" | "100%";
+  setPaymentRate: Dispatch<SetStateAction<"50%" | "100%">>;
 };
 
 export const CheckoutContext = createContext<CheckoutContextType | []>([]);
@@ -22,9 +24,12 @@ export const CheckoutProvider = ({
   const [dateAndPeriod, setDateAndPeriod] = useState<DateAndPeriod | null>(
     null
   );
+  const [paymentRate, setPaymentRate] = useState<"50%" | "100%">("100%");
 
   return (
-    <CheckoutContext.Provider value={{ dateAndPeriod, setDateAndPeriod }}>
+    <CheckoutContext.Provider
+      value={{ dateAndPeriod, setDateAndPeriod, paymentRate, setPaymentRate }}
+    >
       {children}
     </CheckoutContext.Provider>
   );

@@ -3,16 +3,21 @@ import {
   CheckoutContext,
   CheckoutContextType,
 } from "../../context/CheckoutContext";
-import { CartItem } from "../../utilities/Types/Cart";
 import useCart from "../useCart/useCart";
 
 const useCheckout = () => {
   const { cart, subtotal } = useCart();
-  const { dateAndPeriod, setDateAndPeriod } = useContext(
-    CheckoutContext as Context<CheckoutContextType>
-  );
+  const { dateAndPeriod, setDateAndPeriod, paymentRate, setPaymentRate } =
+    useContext(CheckoutContext as Context<CheckoutContextType>);
 
-  return { dateAndPeriod, setDateAndPeriod };
+  return {
+    dateAndPeriod,
+    setDateAndPeriod,
+    cart,
+    subtotal,
+    paymentRate,
+    setPaymentRate,
+  };
 };
 
 export default useCheckout;

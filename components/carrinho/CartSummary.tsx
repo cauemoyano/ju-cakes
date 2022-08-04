@@ -16,9 +16,11 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { BsCalendarEvent } from "react-icons/bs";
 import { MdOutlineLocalOffer } from "react-icons/md";
+import useCheckout from "../../services/useCheckout/useCheckout";
 import { formatCurrency } from "../../utilities/auxFunctions";
 import BookingModal from "../layout/BookingModal.tsx/BookingModal";
 import ButtonWithPopOver from "../primitives/ButtonWithPopOver";
@@ -30,10 +32,29 @@ const CartSummary = ({
   items: number;
   subtotal: number;
 }) => {
+  const { setDateAndPeriod } = useCheckout();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [date, setDate] = useState<Date | null>(null);
   const [period, setPeriod] = useState<string | null>(null);
   const finalRef = useRef(null);
+  const router = useRouter();
+
+  const handleCheckout = () => {
+    if (!date || !period) return;
+    setDateAndPeriod({ date, period });
+    router.push("/checkout");
+  };
+
+  const CheckoutButton = (
+    <Button
+      ref={finalRef}
+      mt={4}
+      colorScheme="primaryNumbered"
+      onClick={handleCheckout}
+    >
+      Finalizar Pedido
+    </Button>
+  );
   return (
     <Box
       as="section"
@@ -112,14 +133,10 @@ const CartSummary = ({
         </Text>
       </Flex>
       {date ? (
-        <Button ref={finalRef} mt={4} colorScheme="primaryNumbered">
-          Finalizar Pedido
-        </Button>
+        <>{CheckoutButton}</>
       ) : (
         <ButtonWithPopOver popoverBody="Voce deve seleionar uma data antes de prosseguir.">
-          <Button ref={finalRef} mt={4} colorScheme="primaryNumbered">
-            Finalizar Pedido
-          </Button>
+          {CheckoutButton}
         </ButtonWithPopOver>
       )}
 
