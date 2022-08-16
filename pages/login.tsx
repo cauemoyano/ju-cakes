@@ -9,12 +9,30 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useLayoutEffect } from "react";
 import LoginComponent from "../components/layout/auth/LoginComponent";
 import RegisterComponent from "../components/layout/auth/RegisterComponent";
+import { useAuth } from "../context/AuthContext";
 import { NAV_PAGE_PADDING } from "../utilities/constants";
 
 const Login = () => {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  useLayoutEffect(() => {
+    if (!user) return;
+
+    if (user.admin) {
+      router.push("/admin/home");
+      return;
+    }
+
+    router.push("/");
+  }, [user]);
+
+  if (user) return null;
+
   return (
     <Container
       maxWidth="container.lg"

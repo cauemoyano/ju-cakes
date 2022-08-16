@@ -11,13 +11,14 @@ import {
   InputRightElement,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { LoginSchema } from "../../../utilities/yup/Schemas";
 import { useAuth } from "../../../context/AuthContext";
 import useErrorHandler, {
   firebaseErrorMap,
 } from "../../../services/useErrorHandler/useErrorHandler";
+import { useRouter } from "next/router";
 
 const LoginComponent = () => {
   const [show, setShow] = useState(false);
@@ -31,7 +32,7 @@ const LoginComponent = () => {
         validationSchema={LoginSchema}
         onSubmit={async (values, actions) => {
           try {
-            await login(values.email, values.senha);
+            const res = await login(values.email, values.senha);
             //todo - redirect to user page, hide logins page/btns if admin to admin page
           } catch (error: any) {
             if (

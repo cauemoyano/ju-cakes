@@ -6,7 +6,7 @@ import { useAuth } from "../../../../context/AuthContext";
 import CustomLink from "../../../primitives/CustomLink";
 
 const CartAuthBox = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   return (
     <HStack as="nav" spacing={0} justifyContent="end">
       <CustomLink href="/carrinho">
@@ -19,20 +19,27 @@ const CartAuthBox = () => {
         />
       </CustomLink>
       <Box display={{ base: "none", md: "flex" }}>
-        <Button
-          as={"a"}
-          fontWeight={400}
-          variant={"primaryInverted"}
-          href={"#"}
-        >
-          Entrar
-        </Button>
-        <Button as={"a"} fontWeight={400} variant={"primary"} href={"#"}>
+        {!user && (
+          <CustomLink
+            fontWeight={400}
+            variant={"primaryInverted"}
+            fontSize={"xl"}
+            href="/login"
+            color={"primary.dark"}
+            ml={4}
+          >
+            Entrar
+          </CustomLink>
+        )}
+
+        {/*  <Button as={"a"} fontWeight={400} variant={"primary"} href={"#"}>
           Registrar
-        </Button>
-        <Button fontWeight={400} variant={"primaryInverted"} onClick={logout}>
-          Sair
-        </Button>
+        </Button> */}
+        {user && (
+          <Button fontWeight={400} variant={"primaryInverted"} onClick={logout}>
+            Sair
+          </Button>
+        )}
       </Box>
     </HStack>
   );
