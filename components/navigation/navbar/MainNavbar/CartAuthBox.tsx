@@ -23,7 +23,6 @@ const CartAuthBox = () => {
           <CustomLink
             fontWeight={400}
             variant={"primaryInverted"}
-            fontSize={"xl"}
             href="/login"
             color={"primary.dark"}
             ml={4}

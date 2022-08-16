@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   UserCredential,
@@ -23,6 +24,7 @@ type ContextProps = {
       name: string;
     }
   ) => Promise<void>;
+  sendPassRecoveryEmail: (email: string) => Promise<void>;
 };
 
 const AuthUserContext = createContext<ContextProps | {}>({});
@@ -89,9 +91,20 @@ export const AuthUserProvider = ({
     await signOut(auth);
   };
 
+  const sendPassRecoveryEmail = async (email: string) => {
+    return sendPasswordResetEmail(auth, email);
+  };
+
   return (
     <AuthUserContext.Provider
-      value={{ user, signup, logout, login, setUserData }}
+      value={{
+        user,
+        signup,
+        logout,
+        login,
+        setUserData,
+        sendPassRecoveryEmail,
+      }}
     >
       {loading ? null : children}
     </AuthUserContext.Provider>

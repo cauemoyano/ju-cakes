@@ -10,7 +10,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import LoginComponent from "../components/layout/auth/LoginComponent";
 import RegisterComponent from "../components/layout/auth/RegisterComponent";
 import { useAuth } from "../context/AuthContext";
