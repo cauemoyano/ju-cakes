@@ -8,6 +8,7 @@ import {
   TabProps,
   Tabs,
 } from "@chakra-ui/react";
+import Script from "next/script";
 import React, { useState } from "react";
 import AmountSelection from "../components/checkout/AmountSelection";
 import Payment from "../components/checkout/Payment";
@@ -54,6 +55,7 @@ const Checkout = () => {
           </TabPanels>
         </Tabs>
       </Center>
+      <Script src="https://sdk.mercadopago.com/js/v2" />
     </Container>
   );
 };

@@ -8,6 +8,7 @@ import OurProducts from "../components/home/OurProducts";
 import Testimonials from "../components/home/Testimonials";
 import useViewportChecker from "../utilities/hooks/useViewportChecker";
 import { getCollection } from "../services/FirebaseStorageService/FirebaseStorageService";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const Home: NextPage = ({
   categories,

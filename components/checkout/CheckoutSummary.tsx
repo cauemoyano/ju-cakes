@@ -13,7 +13,6 @@ import { formatCurrency } from "../../utilities/auxFunctions";
 
 const CheckoutSummary = () => {
   const { cart, subtotal, dateAndPeriod } = useCheckout();
-  console.log(dateAndPeriod);
   return (
     <VStack p={4} shadow="md" spacing={4} borderWidth="1px" borderRadius="5px">
       <Heading fontSize="2xl" mb={4}>

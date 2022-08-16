@@ -13,6 +13,7 @@ import React from "react";
 import useCheckout from "../../services/useCheckout/useCheckout";
 import { formatCurrency } from "../../utilities/auxFunctions";
 import CheckoutSummary from "./CheckoutSummary";
+import PaymentForm from "./PaymentForm";
 
 const AmountSelection = ({ goNextTab }: { goNextTab: () => void }) => {
   const { paymentRate, setPaymentRate, subtotal } = useCheckout();

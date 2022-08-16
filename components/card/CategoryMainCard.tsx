@@ -71,9 +71,7 @@ export default function CategoryMainCard({ image, name, id }: Category) {
             fontFamily={"body"}
             fontWeight={500}
           >
-            <Link href="#" _hover={{ textDecoration: "none" }}>
-              Pao de Mel
-            </Link>
+            <Text _hover={{ textDecoration: "none" }}>Pao de Mel</Text>
           </Heading>
         </Stack>
       </Box>

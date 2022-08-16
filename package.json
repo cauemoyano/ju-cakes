@@ -16,7 +16,9 @@
     "@emotion/styled": "^11.8.1",
     "@fontsource/eczar": "^4.5.9",
     "@fontsource/inter": "^4.5.10",
+    "@paypal/react-paypal-js": "^7.8.1",
     "@types/react-datepicker": "^4.4.2",
+    "axios": "^0.27.2",
     "firebase": "^9.8.2",
     "formik": "^2.2.9",
     "framer-motion": "^6.3.6",
@@ -26,8 +28,8 @@
     "react-dom": "18.1.0",
     "react-icons": "^4.3.1",
     "react-input-mask": "^2.0.4",
-    "yup": "^0.32.11",
-    "swiper": "^8.1.5"
+    "swiper": "^8.1.5",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

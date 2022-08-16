@@ -33,7 +33,7 @@ const DesktopTableItem = ({ item }: { item: CartItem }) => {
   };
 
   return (
-    <Tr position="relative">
+    <Tr>
       <Td px={2}>
         <Flex alignItems="center" pb={2} maxWidth="250px">
           <Box width="40%" maxWidth="100px">
@@ -55,20 +55,20 @@ const DesktopTableItem = ({ item }: { item: CartItem }) => {
           alignSelf="center"
         />
       </Td>
-      <Td px={2} minWidth="140px" textAlign="center">
+      <Td px={2} minWidth="140px" textAlign="center" position="relative">
         <Text fontSize="lg">{formatCurrency(price * quantity)}</Text>
+        <IconButton
+          colorScheme="red"
+          variant={"ghost"}
+          aria-label="Remover produto do carrinho"
+          icon={<CloseIcon />}
+          isRound={true}
+          position="absolute"
+          top={0}
+          right={"0.5rem"}
+          onClick={() => removeItem(item)}
+        />
       </Td>
-      <IconButton
-        colorScheme="red"
-        variant={"ghost"}
-        aria-label="Remover produto do carrinho"
-        icon={<CloseIcon />}
-        isRound={true}
-        position="absolute"
-        top={0}
-        right={"0.5rem"}
-        onClick={() => removeItem(item)}
-      />
     </Tr>
   );
 };
