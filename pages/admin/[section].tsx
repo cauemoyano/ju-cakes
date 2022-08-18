@@ -1,6 +1,6 @@
 import { Box, Drawer, DrawerContent, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { ReactNode, useEffect, useMemo } from "react";
+import React, { ReactNode, useEffect, useLayoutEffect, useMemo } from "react";
 import MobileNav from "../../components/admin/MobileNav";
 import {
   LinkItems,
@@ -15,28 +15,22 @@ const Admin = () => {
   const router = useRouter();
   const { user } = useAuth();
 
-  /*  useEffect(() => {
+  useLayoutEffect(() => {
     if (!user || !user?.admin) router.push("/");
-  }, [user]);
- */
+  }, []);
+
   const currentPath = router.query.section;
 
   const findSlugMatchingCmp = () =>
     LinkItems.find((link) => {
       return link.path === currentPath;
+    }) ||
+    LinkItems.find((link) => {
+      return link.path === "home";
     });
 
-  /*   useEffect(() => {
-    const foundComponent = findSlugMatchingCmp();
-
-    if (currentPath && !foundComponent) router.push("/admin/home");
-  }, [router]); */
-
   const cmp = findSlugMatchingCmp()?.component;
-  /*   if (!user) {
-    return null;
-  } */
-
+  if (!user || !user?.admin) return null;
   const subPagesBox = useMemo(
     () => (
       <Box ml={{ base: 0, md: 60 }} p="4">
@@ -45,6 +39,7 @@ const Admin = () => {
     ),
     [cmp]
   );
+
   return (
     <Box minH="100vh" bg="light.main">
       <SidebarContent

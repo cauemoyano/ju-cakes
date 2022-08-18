@@ -26,6 +26,14 @@ export const LoginSchema = Yup.object().shape({
   senha: Yup.string().required("Insira sua senha"),
 });
 
+export const GuestSchema = Yup.object().shape({
+  name: Yup.string().required("Nome é obrigatório"),
+  email: Yup.string().email("Email inválido").required("Insira seu email"),
+  phone: Yup.string()
+    .matches(phoneRegExp, "Telefone inválido")
+    .required("Telefone é obrigatório"),
+});
+
 export const PassRecoverySchema = Yup.object().shape({
   email: Yup.string().email("Email inválido").required("Insira seu email"),
 });

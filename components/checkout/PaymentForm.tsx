@@ -24,7 +24,6 @@ declare global {
 const PaymentForm = () => {
   const { cart, paymentRate, dateAndPeriod, getCheckoutAmount } = useCheckout();
   useEffect(() => {
-    console.log(!!window.MercadoPago);
     if (!window.MercadoPago) return;
 
     (async () => {

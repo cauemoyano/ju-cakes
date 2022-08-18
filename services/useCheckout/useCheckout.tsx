@@ -13,9 +13,6 @@ const useCheckout = () => {
   const { dateAndPeriod, setDateAndPeriod, paymentRate, setPaymentRate } =
     useContext(CheckoutContext as Context<CheckoutContextType>);
 
-  /*   useEffect(() => {
-    createCode();
-  }, []); */
   const getPaymentAmount = httpsCallable(functions, "getPaymentAmount");
 
   const getCheckoutAmount = async () => {
@@ -32,6 +29,8 @@ const useCheckout = () => {
     }
   };
 
+  const isCartEmpty = () => !!!cart.length;
+
   return {
     dateAndPeriod,
     setDateAndPeriod,
@@ -40,6 +39,7 @@ const useCheckout = () => {
     paymentRate,
     setPaymentRate,
     getCheckoutAmount,
+    isCartEmpty,
   };
 };
 

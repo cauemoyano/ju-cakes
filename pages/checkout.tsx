@@ -8,18 +8,26 @@ import {
   TabProps,
   Tabs,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import Script from "next/script";
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import AmountSelection from "../components/checkout/AmountSelection";
 import Payment from "../components/checkout/Payment";
+import StepsContainer from "../components/checkout/StepsContainer";
+import UserIdentification from "../components/checkout/UserIdentification";
+import useCheckout from "../services/useCheckout/useCheckout";
 import { NAV_PAGE_PADDING } from "../utilities/constants";
 
 const Checkout = () => {
-  const [tabIndex, setTabIndex] = useState(0);
+  const { isCartEmpty } = useCheckout();
+  const router = useRouter();
 
-  const goNextTab = () => {
-    setTabIndex((index) => index + 1);
-  };
+  useLayoutEffect(() => {
+    isCartEmpty() && router.push("/");
+  }, []);
+
+  if (isCartEmpty()) return null;
+
   return (
     <Container
       paddingTop={NAV_PAGE_PADDING}
@@ -29,51 +37,9 @@ const Checkout = () => {
       display="flex"
       flexDirection={"column"}
     >
-      <Center>
-        <Tabs
-          variant="unstyled"
-          p={4}
-          display="flex"
-          flexDirection="column"
-          index={tabIndex}
-        >
-          <TabList mx="auto">
-            <CustomTab mr={12}>1</CustomTab>
-            <CustomTab mr={12}>2</CustomTab>
-            <CustomTab>3</CustomTab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              <AmountSelection goNextTab={goNextTab} />
-            </TabPanel>
-            <TabPanel>
-              <Payment goNextTab={goNextTab} />
-            </TabPanel>
-            <TabPanel>
-              <p>three!</p>
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </Center>
-      <Script src="https://sdk.mercadopago.com/js/v2" />
+      <UserIdentification />
+      {/*  <StepsContainer /> */}
     </Container>
-  );
-};
-
-const CustomTab = ({
-  children,
-  ...props
-}: { children: React.ReactNode } & TabProps) => {
-  return (
-    <Tab
-      borderRadius="full"
-      bg="secondary.light"
-      border="1px"
-      borderColor="secondary.dark"
-      {...props}
-    >
-      {children}
-    </Tab>
   );
 };
 
