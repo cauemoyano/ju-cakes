@@ -57,9 +57,3 @@ export const ProductSchema = Yup.object().shape({
 export const CategorySchema = Yup.object().shape({
   name: Yup.string().required("Nome é obrigatório"),
 });
-/* export const VariantSchema = Yup.object().shape({
-  name: Yup.string().required("Nome é obrigatório"),
-  price: Yup.number()
-    .required("Preço obrigatório")
-    .min(0, "Preço deve ser positivo"),
-}); */

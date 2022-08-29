@@ -22,3 +22,20 @@ export interface CartItem {
   name: string;
   price: number;
 }
+
+export type Customer = {
+  uid?: string;
+  name: string;
+  admin?: boolean;
+  email: string;
+  phone?: string;
+};
+
+export type OrderData = Customer & {
+  dateAndPeriod: {
+    date: Date;
+    period: string;
+  };
+  cart: CartItem[];
+  paymentRate: string;
+};

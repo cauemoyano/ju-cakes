@@ -14,19 +14,21 @@ import Layout from "../components/layout/Layout";
 import { AuthUserProvider } from "../context/AuthContext";
 import { CartProvider } from "../context/CartContext";
 import { CheckoutProvider } from "../context/CheckoutContext";
+import Script from "next/script";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider resetCSS={true} theme={theme}>
-      <AuthUserProvider>
-        <CartProvider>
-          <CheckoutProvider>
+      <CheckoutProvider>
+        <AuthUserProvider>
+          <CartProvider>
             <Layout>
               <Component {...pageProps} />
             </Layout>
-          </CheckoutProvider>
-        </CartProvider>
-      </AuthUserProvider>
+          </CartProvider>
+        </AuthUserProvider>
+      </CheckoutProvider>
+      <Script src="https://sdk.mercadopago.com/js/v2" />
     </ChakraProvider>
   );
 }

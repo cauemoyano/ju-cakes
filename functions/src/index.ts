@@ -9,7 +9,8 @@ if (process.env.MERCADOPAGO_PUBLIC_KEY) {
 
 // The Firebase Admin SDK to access Firestore.
 import * as admin from "firebase-admin";
-import { Product } from "./types";
+import { OrderData, Product } from "./types";
+import { PaymentCreateResponse } from "mercadopago/resources/payment";
 /* import { Product } from "./types"; */
 admin.initializeApp();
 
@@ -20,24 +21,59 @@ exports.createPayment = functions.https.onCall(async (data, context) => {
     `ORDEM${today.getDate()}${today.getMonth()}${today.getFullYear()}${uid(
       6
     )}`.toUpperCase();
+
+  const { mercadoData, orderData }: { mercadoData: any; orderData: OrderData } =
+    data;
+  let paymentResponse: PaymentCreateResponse;
   try {
-    const res = await mercadopago.payment.save(data);
-    const { status, id, transaction_details, transaction_amount } = res.body;
-    if (status === "approved") {
-      await store.collection("orders").doc(orderId).set({
-        status,
-        paymentId: id,
-        transaction_details,
-        transaction_amount,
-      });
+    paymentResponse = await mercadopago.payment.save({
+      ...mercadoData,
+      payer: { ...mercadoData.payer, email: orderData.email },
+    });
+  } catch (err) {
+    throw new functions.https.HttpsError(
+      "unavailable",
+      "Failed processing payment"
+    );
+  }
+  const { status, id, transaction_details, transaction_amount } =
+    paymentResponse.body;
+  const {
+    uid: ordId,
+    name,
+    email,
+    phone,
+    dateAndPeriod,
+    cart,
+    paymentRate,
+  } = orderData;
+  if (status === "approved") {
+    try {
+      await store
+        .collection("orders")
+        .doc(orderId)
+        .set({
+          status,
+          paymentId: id,
+          transaction_details,
+          transaction_amount,
+          customerId: ordId || null,
+          name,
+          email,
+          phone: phone || null,
+          dateAndPeriod,
+          cart,
+          paymentRate,
+          createAt: admin.firestore.Timestamp.now(),
+        });
 
       return orderId;
+    } catch (error) {
+      throw new functions.https.HttpsError("internal", "Error creating order");
     }
-
-    throw new Error("Payment error");
-  } catch (error) {
-    return error;
   }
+
+  throw new functions.https.HttpsError("aborted", "Payment failed");
 });
 
 type CartProduct = { quantity: number; price: number };

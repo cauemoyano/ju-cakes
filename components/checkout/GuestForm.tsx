@@ -11,11 +11,14 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
+import useCheckout from "../../services/useCheckout/useCheckout";
 import { GuestSchema } from "../../utilities/yup/Schemas";
+import ButtonWithPopOver from "../primitives/ButtonWithPopOver";
 import PhoneInput from "../primitives/PhoneInput";
 
 const GuestForm = () => {
   const [termsAndPolicies, setTermsAndPolicies] = useState(false);
+  const { setGuest } = useCheckout();
   return (
     <VStack>
       <Heading fontFamily="inter" fontSize="lg" fontWeight="normal" mb={4}>
@@ -24,7 +27,10 @@ const GuestForm = () => {
       <Formik
         initialValues={{ email: "", name: "", phone: "" }}
         validationSchema={GuestSchema}
-        onSubmit={async (values, actions) => {}}
+        onSubmit={(values) => {
+          console.log(`submit`);
+          setGuest(values);
+        }}
       >
         {({ isSubmitting, errors, touched, values, handleChange }) => (
           <Form>
@@ -64,15 +70,23 @@ const GuestForm = () => {
             >
               Eu li e concordo com os Termos de uso e Politicas de Privacidade.
             </Checkbox>
-            <Flex justifyContent="center">
-              <Button
-                colorScheme="primaryNumbered"
-                isLoading={isSubmitting}
-                type="submit"
-                variant="outline"
-              >
-                Continuar como visitante
-              </Button>
+            <Flex alignItems="center" justifyContent="center" mt={4}>
+              {termsAndPolicies ? (
+                <Button
+                  colorScheme="primaryNumbered"
+                  isLoading={isSubmitting}
+                  type="submit"
+                  variant="outline"
+                >
+                  Continuar como visitante
+                </Button>
+              ) : (
+                <ButtonWithPopOver popoverBody="Voce deve concordar com os termos de uso e Politicas de Privacidade antes de prosseguir.">
+                  <Button colorScheme="primaryNumbered" variant="outline">
+                    Continuar como visitante
+                  </Button>
+                </ButtonWithPopOver>
+              )}
             </Flex>
           </Form>
         )}

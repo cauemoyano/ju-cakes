@@ -2,9 +2,30 @@ import { useToast } from "@chakra-ui/react";
 import { FirebaseError } from "firebase/app";
 import React, { useEffect, useState } from "react";
 
-export const firebaseErrorMap = {
+type TFirebaseErrorMap = {
+  [key: string]: string;
+};
+export const firebaseErrorMap: TFirebaseErrorMap = {
   "auth/email-already-in-use": "Email inválido",
   "auth/user-not-found": "Usuário ou senha inválido",
+  "functions/aborted": "Falha ao processar pagamento.",
+  "functions/unavailable": "Provedor de pagamento fora do ar.",
+  "functions/internal": "Um erro interno ocorreu, entre em contato conosco.",
+};
+type TMercadoPagoFormErrorsMap = {
+  [key: string]: string;
+};
+export const MERCADOPAGO_FORM_ERRORS: TMercadoPagoFormErrorsMap = {
+  "cardNumber should be of length between '8' and '19'.":
+    "Número do cartão deve ser entre 9 e 19 dígitos.",
+  "cardNumber should be a number.":
+    "Número do cartão deve conter apenas dígitos.",
+  "expirationMonth should be a number.":
+    "Mês de validade deve conter apenas dígitos.",
+  "expirationYear should be a number.":
+    "Ano de validade deve conter apenas dígitos.",
+  "expirationYear should be of length '2' or '4'.":
+    "Ano de validade deve conter 2 ou 4 dígitos.",
 };
 
 const useErrorHandler = () => {

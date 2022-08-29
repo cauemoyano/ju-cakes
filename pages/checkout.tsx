@@ -10,20 +10,28 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import Script from "next/script";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import AmountSelection from "../components/checkout/AmountSelection";
 import Payment from "../components/checkout/Payment";
 import StepsContainer from "../components/checkout/StepsContainer";
 import UserIdentification from "../components/checkout/UserIdentification";
+import useCart from "../services/useCart/useCart";
 import useCheckout from "../services/useCheckout/useCheckout";
 import { NAV_PAGE_PADDING } from "../utilities/constants";
 
 const Checkout = () => {
-  const { isCartEmpty } = useCheckout();
+  const { isCartEmpty, customer, setGuest } = useCheckout();
+  const { clearCart, setShowModal } = useCart();
   const router = useRouter();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     isCartEmpty() && router.push("/");
+    return () => {
+      console.log("runs");
+      setGuest(null);
+      clearCart();
+      setShowModal(false);
+    };
   }, []);
 
   if (isCartEmpty()) return null;
@@ -37,8 +45,7 @@ const Checkout = () => {
       display="flex"
       flexDirection={"column"}
     >
-      <UserIdentification />
-      {/*  <StepsContainer /> */}
+      {customer ? <StepsContainer /> : <UserIdentification />}
     </Container>
   );
 };

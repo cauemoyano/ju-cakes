@@ -40,6 +40,10 @@ const useCart = () => {
     setCart([...cartItems]);
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   useEffect(() => {
     const total = cart.reduce((total, item) => {
       return (total += item.quantity * item.price);
@@ -55,6 +59,7 @@ const useCart = () => {
     showModal,
     subtotal: amount,
     removeItem,
+    clearCart,
   };
 };
 

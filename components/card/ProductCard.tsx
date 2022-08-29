@@ -29,7 +29,10 @@ const ProductCard = ({ ...product }: Product) => {
     : 0;
 
   return (
-    <CustomLink href={`/produto/${id as string}`}>
+    <CustomLink
+      href={`/produto/${id as string}`}
+      _hover={{ textDecoration: "none" }}
+    >
       <Box
         role={"group"}
         p={6}
@@ -82,9 +85,7 @@ const ProductCard = ({ ...product }: Product) => {
             fontFamily={"body"}
             fontWeight={500}
           >
-            <Link href="#" _hover={{ textDecoration: "none" }}>
-              {name}
-            </Link>
+            <Text>{name}</Text>
           </Heading>
           <Text>{description}</Text>
           <Flex align={"center"} w="full" justifyContent="space-between">

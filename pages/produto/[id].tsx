@@ -10,7 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from "next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsCart } from "react-icons/bs";
 import CartModal from "../../components/cartModal/CartModal";
 import NumberInputWithButtonControl from "../../components/primitives/NumberInputWithButtonControl";

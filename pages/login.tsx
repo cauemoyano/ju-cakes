@@ -28,6 +28,10 @@ const Login = () => {
       return;
     }
 
+    if (router?.query?.checkout) {
+      router.push("/checkout");
+      return;
+    }
     router.push("/");
   }, [user]);
 

@@ -32,8 +32,8 @@ export const formConfig = {
     id: "form-checkout__identificationNumber",
     placeholder: "Número do documento",
   },
-  cardholderEmail: {
+  /*  cardholderEmail: {
     id: "form-checkout__cardholderEmail",
     placeholder: "E-mail",
-  },
+  }, */
 };

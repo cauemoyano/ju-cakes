@@ -9,6 +9,8 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { createContext, useContext, useState, useEffect, Context } from "react";
 import { auth, db } from "../config/firebase";
+import { getDocument } from "../services/FirebaseStorageService/FirebaseStorageService";
+import useCheckout from "../services/useCheckout/useCheckout";
 import { User } from "../utilities/Types/Auth";
 
 type ContextProps = {
@@ -46,12 +48,13 @@ export const AuthUserProvider = ({
       if (user) {
         user
           .getIdTokenResult()
-          .then((idTokenResult) => {
+          .then(async (idTokenResult) => {
+            const userData = await getDocument("customers", user.uid);
             setUser({
-              uid: user.uid,
               email: user.email,
               name: user.displayName,
               admin: !!idTokenResult.claims?.admin,
+              ...userData,
             });
           })
           .catch((error) => {

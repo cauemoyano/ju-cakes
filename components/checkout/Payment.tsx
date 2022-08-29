@@ -8,13 +8,15 @@ import React from "react";
 import CheckoutSummary from "./CheckoutSummary";
 import PaymentForm from "./PaymentForm";
 
-const Payment = ({ goNextTab }: { goNextTab: () => void }) => {
-  const initialOptions = {
-    "client-id": "sb",
-    currency: "USD",
-    intent: "capture",
-    "data-client-token": "abc123xyz==",
-  };
+const Payment = ({
+  setOrderId,
+  active,
+  setError,
+}: {
+  setOrderId: React.Dispatch<React.SetStateAction<string | null>>;
+  setError: React.Dispatch<any>;
+  active: boolean;
+}) => {
   return (
     <VStack p={4}>
       <Heading as="h1" textAlign="center" mb={6}>
@@ -22,16 +24,14 @@ const Payment = ({ goNextTab }: { goNextTab: () => void }) => {
       </Heading>
       <Flex w="full">
         <Box width="60%">
-          <PaymentForm />
+          {active && (
+            <PaymentForm setOrderId={setOrderId} setError={setError} />
+          )}
         </Box>
         <Box width="40%">
           <CheckoutSummary />
         </Box>
       </Flex>
-
-      <Button colorScheme="primaryNumbered" onClick={goNextTab}>
-        Continuar
-      </Button>
     </VStack>
   );
 };

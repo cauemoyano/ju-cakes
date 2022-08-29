@@ -38,7 +38,7 @@ export const deleteDocument = (id: string, collectionName: string) => {
 };
 export const getDocument = async (collectionName: string, id: string) => {
   const snap = await getDoc(doc(db, collectionName, id));
-  return snap.data();
+  return { ...snap.data(), uid: snap.id };
 };
 
 export const getDocsByQuery = async (

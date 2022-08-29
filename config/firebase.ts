@@ -19,4 +19,4 @@ export const db = getFirestore(app);
 export const auth = getAuth();
 
 export const functions = getFunctions(app);
-connectFunctionsEmulator(functions, "localhost", 5001);
+/* connectFunctionsEmulator(functions, "localhost", 5001); */

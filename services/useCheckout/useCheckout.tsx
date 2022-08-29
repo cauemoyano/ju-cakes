@@ -1,17 +1,34 @@
 import { httpsCallable } from "firebase/functions";
-import React, { Context, useContext, useEffect, useState } from "react";
+import React, {
+  Context,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { functions } from "../../config/firebase";
+import { useAuth } from "../../context/AuthContext";
 import {
   CheckoutContext,
   CheckoutContextType,
+  Customer,
 } from "../../context/CheckoutContext";
 import { createCode } from "../PagSeguro/Pagseguro";
 import useCart from "../useCart/useCart";
 
 const useCheckout = () => {
   const { cart, subtotal } = useCart();
-  const { dateAndPeriod, setDateAndPeriod, paymentRate, setPaymentRate } =
-    useContext(CheckoutContext as Context<CheckoutContextType>);
+  const { user } = useAuth();
+  const {
+    dateAndPeriod,
+    setDateAndPeriod,
+    paymentRate,
+    setPaymentRate,
+    customer,
+    setCustomer,
+    guest,
+    setGuest,
+  } = useContext(CheckoutContext as Context<CheckoutContextType>);
 
   const getPaymentAmount = httpsCallable(functions, "getPaymentAmount");
 
@@ -22,12 +39,31 @@ const useCheckout = () => {
       variantSelected: item.variant,
     }));
     try {
-      const amount = await getPaymentAmount({ cartItems });
-      return (amount.data as number).toString();
+      const res = await getPaymentAmount({ cartItems });
+      const { data: totalAmount } = res;
+
+      const amount: number =
+        paymentRate === "50%"
+          ? (totalAmount as number) * 0.5
+          : (totalAmount as number);
+
+      return amount.toString();
     } catch (error) {
-      throw new Error("COuld not fetch amount");
+      throw new Error("Could not fetch amount");
     }
   };
+
+  useEffect(() => {
+    if (!user && guest) {
+      setCustomer(guest);
+    }
+    if (user && !guest) {
+      setCustomer(user);
+    }
+    if (!user && !guest) {
+      setCustomer(null);
+    }
+  }, [user, guest]);
 
   const isCartEmpty = () => !!!cart.length;
 
@@ -40,6 +76,8 @@ const useCheckout = () => {
     setPaymentRate,
     getCheckoutAmount,
     isCartEmpty,
+    customer,
+    setGuest,
   };
 };
 
