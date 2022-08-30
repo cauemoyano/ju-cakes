@@ -1,5 +1,17 @@
 import * as Yup from "yup";
 import { phoneRegExp } from "../../components/primitives/PhoneInput";
+export const UserDetailsSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Nome inválido")
+    .max(50, "Nome muito longo")
+    .required("Nome é obrigatório"),
+  emailRegister: Yup.string()
+    .email("Email inválido")
+    .required("Insira seu email"),
+  phone: Yup.string()
+    .matches(phoneRegExp, "Telefone inválido")
+    .required("Telefone é obrigatório"),
+});
 
 export const RegisterSchema = Yup.object().shape({
   name: Yup.string()

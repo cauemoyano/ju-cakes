@@ -3,6 +3,7 @@ export interface User {
   email: string | null;
   name: string | null;
   admin: boolean;
+  phone: string;
 }
 
 export interface AuthContextProps {

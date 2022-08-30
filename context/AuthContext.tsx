@@ -27,6 +27,7 @@ type ContextProps = {
     }
   ) => Promise<void>;
   sendPassRecoveryEmail: (email: string) => Promise<void>;
+  loading: boolean;
 };
 
 const AuthUserContext = createContext<ContextProps | {}>({});
@@ -49,10 +50,13 @@ export const AuthUserProvider = ({
         user
           .getIdTokenResult()
           .then(async (idTokenResult) => {
-            const userData = await getDocument("customers", user.uid);
+            const userData = (await getDocument("customers", user.uid)) as {
+              name: string;
+              phone: string;
+              uid: string;
+            };
             setUser({
               email: user.email,
-              name: user.displayName,
               admin: !!idTokenResult.claims?.admin,
               ...userData,
             });
@@ -107,6 +111,7 @@ export const AuthUserProvider = ({
         login,
         setUserData,
         sendPassRecoveryEmail,
+        loading,
       }}
     >
       {loading ? null : children}

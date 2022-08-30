@@ -1,4 +1,4 @@
-import { Input } from "@chakra-ui/react";
+import { Input, InputProps } from "@chakra-ui/react";
 import React, { ChangeEvent } from "react";
 import InputMask from "react-input-mask";
 
@@ -31,13 +31,16 @@ type Props = {
   };
   id?: string;
   name?: string;
-};
+  readOnly?: boolean;
+} & InputProps;
 
 const PhoneInput = ({
   value,
   handleChange,
   id = "phone",
   name = "phone",
+  variant = "outline",
+  readOnly = false,
 }: Props) => {
   return (
     <Input
@@ -48,6 +51,8 @@ const PhoneInput = ({
       type="phone"
       value={value}
       onChange={handleChange}
+      variant={variant}
+      readOnly={readOnly}
     />
   );
 };

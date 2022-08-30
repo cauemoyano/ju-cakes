@@ -9,15 +9,13 @@ import {
 import { ProductsProvider } from "../../context/ProductsContext";
 import CustomerProvider from "../../context/Admin/CustomersContext";
 import { useAuth } from "../../context/AuthContext";
+import useProtectedRoute from "../../services/useProtectedRoute/useProtectedRoute";
 
 const Admin = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const { authorized } = useProtectedRoute(true);
   const { user } = useAuth();
-
-  useLayoutEffect(() => {
-    if (!user || !user?.admin) router.push("/");
-  }, []);
 
   const currentPath = router.query.section;
 
@@ -30,7 +28,9 @@ const Admin = () => {
     });
 
   const cmp = findSlugMatchingCmp()?.component;
-  if (!user || !user?.admin) return null;
+
+  if (!authorized) return null;
+
   const subPagesBox = useMemo(
     () => (
       <Box ml={{ base: 0, md: 60 }} p="4">
