@@ -5,6 +5,10 @@ import {
   signInWithEmailAndPassword,
   signOut,
   UserCredential,
+  User as FirebaseUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+  onIdTokenChanged,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { createContext, useContext, useState, useEffect, Context } from "react";
@@ -28,6 +32,13 @@ type ContextProps = {
   ) => Promise<void>;
   sendPassRecoveryEmail: (email: string) => Promise<void>;
   loading: boolean;
+  firebaseUser: FirebaseUser | null;
+  relogin: (
+    user: FirebaseUser,
+    email: string,
+    password: string
+  ) => Promise<UserCredential>;
+  refreshToken: string | null;
 };
 
 const AuthUserContext = createContext<ContextProps | {}>({});
@@ -41,25 +52,29 @@ export const AuthUserProvider = ({
   children: React.ReactNode;
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
-  console.log(user);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onIdTokenChanged(auth, (user) => {
       if (user) {
         user
           .getIdTokenResult()
           .then(async (idTokenResult) => {
+            setRefreshToken(user.refreshToken);
+
             const userData = (await getDocument("customers", user.uid)) as {
               name: string;
               phone: string;
               uid: string;
             };
             setUser({
-              email: user.email,
+              email: user.email as string,
               admin: !!idTokenResult.claims?.admin,
               ...userData,
             });
+            setFirebaseUser(user);
           })
           .catch((error) => {
             console.log(error);
@@ -79,6 +94,14 @@ export const AuthUserProvider = ({
 
   const login = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
+  };
+  const relogin = async (
+    user: FirebaseUser,
+    email: string,
+    password: string
+  ) => {
+    const credential = EmailAuthProvider.credential(email, password);
+    return reauthenticateWithCredential(user, credential);
   };
 
   const setUserData = (
@@ -112,6 +135,9 @@ export const AuthUserProvider = ({
         setUserData,
         sendPassRecoveryEmail,
         loading,
+        firebaseUser,
+        relogin,
+        refreshToken,
       }}
     >
       {loading ? null : children}

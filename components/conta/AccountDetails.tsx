@@ -9,37 +9,43 @@ import {
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import useAccount, {
+  TPersonalData,
+} from "../../services/useAccount/useAccount";
 import { UserDetailsSchema } from "../../utilities/yup/Schemas";
 import PhoneInput from "../primitives/PhoneInput";
 import EditSave from "./EditSave";
+import ReloginModal from "../layout/modal/ReloginModal";
 
-type Props = {};
-
-const handleSubmit = () => {};
-
-const AccountDetails = (props: Props) => {
+const AccountDetails = () => {
   const { user } = useAuth();
-  const [isEditing, setIsEditing] = useState(false);
-
-  const toggleEdit = () => setIsEditing((state) => !state);
+  const {
+    toggleEdit,
+    isEditing,
+    updatePersonalData,
+    isLoading,
+    error,
+    setError,
+    handleAfterLogin,
+  } = useAccount();
 
   if (!user) return null;
   const { name, email, phone } = user;
+  const loginRequired = error?.code === "auth/requires-recent-login";
+
   return (
     <VStack spacing={4}>
-      <EditSave isEditing={isEditing} toggleEdit={toggleEdit} />
       <Formik
         initialValues={{ name, email, phone }}
         validationSchema={UserDetailsSchema}
-        onSubmit={handleSubmit}
+        onSubmit={updatePersonalData}
       >
-        {({ isSubmitting, errors, touched, values, handleChange }) => (
+        {({ errors, touched, values, handleChange, handleReset }) => (
           <Form>
             <FormControl isInvalid={!!(errors.name && touched.name)} mb={4}>
               <FormLabel htmlFor="name">Nome</FormLabel>
               <Input
                 name="name"
-                id="name"
                 type="text"
                 value={values.name as string}
                 onChange={handleChange}
@@ -52,7 +58,6 @@ const AccountDetails = (props: Props) => {
               <FormLabel htmlFor="email">Email</FormLabel>
               <Input
                 name="email"
-                id="email"
                 type="email"
                 value={values.email as string}
                 onChange={handleChange}
@@ -71,6 +76,17 @@ const AccountDetails = (props: Props) => {
               />
               <FormErrorMessage>{errors.phone}</FormErrorMessage>
             </FormControl>
+            <EditSave
+              isEditing={isEditing}
+              toggleEdit={toggleEdit}
+              handleReset={handleReset}
+              isLoading={isLoading}
+            />
+            <ReloginModal
+              isOpen={loginRequired}
+              onClose={() => setError(null)}
+              handleAfterLogin={handleAfterLogin}
+            />
           </Form>
         )}
       </Formik>

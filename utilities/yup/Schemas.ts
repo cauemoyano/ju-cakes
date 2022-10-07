@@ -5,9 +5,7 @@ export const UserDetailsSchema = Yup.object().shape({
     .min(2, "Nome inválido")
     .max(50, "Nome muito longo")
     .required("Nome é obrigatório"),
-  emailRegister: Yup.string()
-    .email("Email inválido")
-    .required("Insira seu email"),
+  email: Yup.string().email("Email inválido").required("Insira seu email"),
   phone: Yup.string()
     .matches(phoneRegExp, "Telefone inválido")
     .required("Telefone é obrigatório"),

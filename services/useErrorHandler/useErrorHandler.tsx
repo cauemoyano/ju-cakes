@@ -11,6 +11,8 @@ export const firebaseErrorMap: TFirebaseErrorMap = {
   "functions/aborted": "Falha ao processar pagamento.",
   "functions/unavailable": "Provedor de pagamento fora do ar.",
   "functions/internal": "Um erro interno ocorreu, entre em contato conosco.",
+  "auth/requires-recent-login":
+    "Favor entrar novamente com seu nome de usuário e senha.",
 };
 type TMercadoPagoFormErrorsMap = {
   [key: string]: string;
