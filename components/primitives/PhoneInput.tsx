@@ -41,6 +41,7 @@ const PhoneInput = ({
   name = "phone",
   variant = "outline",
   readOnly = false,
+  ...otherProps
 }: Props) => {
   return (
     <Input
@@ -53,6 +54,7 @@ const PhoneInput = ({
       onChange={handleChange}
       variant={variant}
       readOnly={readOnly}
+      {...otherProps}
     />
   );
 };

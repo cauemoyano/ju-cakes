@@ -1,6 +1,7 @@
 import {
   Container,
   Heading,
+  OrderedList,
   Tab,
   TabList,
   TabPanel,
@@ -9,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import AccountDetails from "../components/conta/AccountDetails";
+import CustomerOrders from "../components/conta/CustomerOrders";
 import useProtectedRoute from "../services/useProtectedRoute/useProtectedRoute";
 import { NAV_PAGE_PADDING } from "../utilities/constants";
 
@@ -34,7 +36,7 @@ const MyAccount = () => {
       >
         Minha Conta
       </Heading>
-      <Tabs width="100%" isFitted variant="unstyled" maxWidth="500px" mx="auto">
+      {/* <Tabs width="100%" isFitted variant="unstyled" maxWidth="500px" mx="auto">
         <TabList mb="1em">
           <Tab
             _selected={{
@@ -58,12 +60,12 @@ const MyAccount = () => {
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <AccountDetails />
-          </TabPanel>
+          <TabPanel></TabPanel>
           <TabPanel></TabPanel>
         </TabPanels>
-      </Tabs>
+      </Tabs> */}
+      <AccountDetails />
+      <CustomerOrders />
     </Container>
   );
 };

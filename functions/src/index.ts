@@ -64,7 +64,7 @@ exports.createPayment = functions.https.onCall(async (data, context) => {
           dateAndPeriod,
           cart,
           paymentRate,
-          createAt: admin.firestore.Timestamp.now(),
+          createdAt: admin.firestore.Timestamp.now(),
         });
 
       return orderId;

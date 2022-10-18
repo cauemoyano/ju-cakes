@@ -8,7 +8,14 @@ export type Customer = {
   phone?: string;
 };
 
-export type OrderData = Customer & {
+type FirebaseDate = {
+  seconds?: number;
+  nanoseconds?: number;
+};
+
+export type OrderData = Pick<Customer, "name" | "email" | "phone"> & {
+  id: string;
+  customerId: string;
   dateAndPeriod: {
     date: Date;
     period: string;
@@ -20,4 +27,7 @@ export type OrderData = Customer & {
     installment_amount: number;
     total_paid_amount: number;
   };
+  status?: string;
+  createdAt?: FirebaseDate;
+  createAt?: FirebaseDate;
 };
