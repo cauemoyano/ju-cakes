@@ -6,7 +6,13 @@ import OrnamentLine from "../../../layout/ornament/OrnamentLine";
 import OrnamentRightSide from "../../../layout/ornament/OrnamentRightSide";
 import OrnamentAnimatedBox from "./OrnamentAnimatedBox";
 
-export const Links = ["INICIO", "PRODUTOS", "SOBRE", "AJUDA", "CONTATO"];
+export const Links = [
+  { name: "INICIO", path: "/" },
+  { name: "PRODUTOS", path: "/produtos" },
+  { name: "SOBRE", path: "/sobre" },
+  { name: "AJUDA", path: "/ajuda" },
+  { name: "CONTATO", path: "/contato" },
+];
 
 const LinksBox = ({ move }: { move: boolean }) => {
   return (
@@ -24,7 +30,9 @@ const LinksBox = ({ move }: { move: boolean }) => {
         </OrnamentAnimatedBox>
         {Links.map((link, i) => (
           <Flex alignItems="center" key={i}>
-            <NavLink key={link}>{link}</NavLink>
+            <NavLink key={i} path={link.path}>
+              {link.name}
+            </NavLink>
             <OrnamentAnimatedBox move={move}>
               <OrnamentLine width="10px" height="5px" />
             </OrnamentAnimatedBox>
@@ -38,7 +46,13 @@ const LinksBox = ({ move }: { move: boolean }) => {
   );
 };
 
-export const NavLink = ({ children }: { children: React.ReactNode }) => {
+export const NavLink = ({
+  children,
+  path,
+}: {
+  children: React.ReactNode;
+  path: string;
+}) => {
   return (
     <Link
       px={2}
@@ -46,7 +60,7 @@ export const NavLink = ({ children }: { children: React.ReactNode }) => {
       _hover={{
         textDecoration: "none",
       }}
-      href={"#"}
+      href={path}
     >
       {children}
     </Link>

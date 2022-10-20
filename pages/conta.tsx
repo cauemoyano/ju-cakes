@@ -36,34 +36,6 @@ const MyAccount = () => {
       >
         Minha Conta
       </Heading>
-      {/* <Tabs width="100%" isFitted variant="unstyled" maxWidth="500px" mx="auto">
-        <TabList mb="1em">
-          <Tab
-            _selected={{
-              borderBottom: "3px solid #690233",
-              h2: { transform: "scale(1.2)", color: "gray.900" },
-            }}
-          >
-            <Heading as="h2" fontSize="xl" color="gray.600" fontFamily="inter">
-              Dados pessoais
-            </Heading>
-          </Tab>
-          <Tab
-            _selected={{
-              borderBottom: "3px solid #690233",
-              h2: { transform: "scale(1.2)", color: "gray.900" },
-            }}
-          >
-            <Heading as="h2" fontSize="xl" color="gray.600" fontFamily="inter">
-              Ordens
-            </Heading>
-          </Tab>
-        </TabList>
-        <TabPanels>
-          <TabPanel></TabPanel>
-          <TabPanel></TabPanel>
-        </TabPanels>
-      </Tabs> */}
       <AccountDetails />
       <CustomerOrders />
     </Container>

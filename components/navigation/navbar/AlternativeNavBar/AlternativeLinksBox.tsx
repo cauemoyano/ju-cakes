@@ -2,7 +2,13 @@ import { Box, Flex, HStack, Image, Link, VStack } from "@chakra-ui/react";
 
 import React from "react";
 
-export const Links = ["INICIO", "PRODUTOS", "SOBRE", "AJUDA", "CONTATO"];
+export const Links = [
+  { name: "INICIO", path: "/" },
+  { name: "PRODUTOS", path: "/produtos" },
+  { name: "SOBRE", path: "/sobre" },
+  { name: "AJUDA", path: "/ajuda" },
+  { name: "CONTATO", path: "/contato" },
+];
 
 const AlternativeLinksBox = () => {
   return (
@@ -10,7 +16,9 @@ const AlternativeLinksBox = () => {
       <HStack as={"nav"} spacing={1} display={{ base: "none", md: "flex" }}>
         {Links.map((link, i) => (
           <Flex alignItems="center" key={i}>
-            <NavLink key={link}>{link}</NavLink>
+            <NavLink path={link.path} key={i}>
+              {link.name}
+            </NavLink>
           </Flex>
         ))}
       </HStack>
@@ -18,7 +26,13 @@ const AlternativeLinksBox = () => {
   );
 };
 
-export const NavLink = ({ children }: { children: React.ReactNode }) => {
+export const NavLink = ({
+  children,
+  path,
+}: {
+  children: React.ReactNode;
+  path: string;
+}) => {
   return (
     <Link
       px={2}
@@ -26,7 +40,7 @@ export const NavLink = ({ children }: { children: React.ReactNode }) => {
       _hover={{
         textDecoration: "none",
       }}
-      href={"#"}
+      href={path}
     >
       {children}
     </Link>

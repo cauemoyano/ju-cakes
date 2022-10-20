@@ -13,6 +13,7 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import FadeOutDisplayNone from "../../../animation/FadeOutDisplayNone";
+import CustomLink from "../../../primitives/CustomLink";
 import CartAuthBox from "./CartAuthBox";
 import LinksBox from "./LinksBox";
 import MobileLinks from "./MobileLinks";
@@ -55,11 +56,13 @@ const MainNavbar = ({ move }: { move: boolean }) => {
           </Flex>
         </FadeOutDisplayNone>
         <FadeOutDisplayNone move={move}>
-          <Image
-            src="/main-logo.svg"
-            boxSize={{ base: "50px", md: "100px" }}
-            alt="Ju Cakes"
-          />
+          <CustomLink href={"/"} aria-label="inicio">
+            <Image
+              src="/main-logo.svg"
+              boxSize={{ base: "50px", md: "100px" }}
+              alt="Ju Cakes"
+            />
+          </CustomLink>
         </FadeOutDisplayNone>
 
         <Box w={{ md: "250px" }} ml={{ base: "auto", md: "0" }}>
@@ -97,12 +100,14 @@ const MainNavbar = ({ move }: { move: boolean }) => {
         variants={smallIconVariants}
         animate={move ? "visible" : "hidden"}
       >
-        <Image
-          src="/main-logo.svg"
-          display={{ base: "none", md: "block" }}
-          boxSize={{ base: "50px" }}
-          alt="Ju Cakes"
-        />
+        <CustomLink href={"/"} aria-label="inicio">
+          <Image
+            src="/main-logo.svg"
+            display={{ base: "none", md: "block" }}
+            boxSize={{ base: "50px" }}
+            alt="Ju Cakes"
+          />
+        </CustomLink>
       </Box>
       <AnimatePresence>{isOpen && <MobileLinks />}</AnimatePresence>
     </Container>
