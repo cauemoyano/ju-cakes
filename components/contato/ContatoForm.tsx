@@ -6,14 +6,17 @@ import {
   Input,
   Stack,
   Textarea,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import React from "react";
+import useMessage from "../../services/useMessage/useMessage";
+import { IMessage } from "../../utilities/Types/Message";
 import { ContactSchema } from "../../utilities/yup/Schemas";
 import PhoneInput from "../primitives/PhoneInput";
 
-const initialValues = {
+const initialValues: IMessage = {
   name: "",
   email: "",
   phone: "",
@@ -21,7 +24,34 @@ const initialValues = {
 };
 
 const ContatoForm = () => {
-  const handleSubmit = () => {};
+  const { postMessage, loading } = useMessage();
+  const toast = useToast();
+  const handleSubmit = async (
+    values: IMessage,
+    actions: FormikHelpers<IMessage>
+  ) => {
+    //todo - limit request and add captcha
+    const { resetForm } = actions;
+    try {
+      await postMessage({ ...values, isRead: false });
+      toast({
+        title: "Sucesso",
+        description: "Mensagem foi enviada, retornaremos em breve.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      resetForm();
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Desculpa, ocorreu um erro. Tente novamente mais tarde.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <VStack spacing={4} mb={8}>
       <Formik
@@ -29,7 +59,7 @@ const ContatoForm = () => {
         validationSchema={ContactSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, errors, touched, values, handleChange }) => (
+        {({ errors, touched, values, handleChange }) => (
           <Form>
             <FormControl isInvalid={!!(errors.name && touched.name)} mb={4}>
               <FormLabel htmlFor="name">Nome</FormLabel>
@@ -73,7 +103,12 @@ const ContatoForm = () => {
               />
               <FormErrorMessage>{errors.message}</FormErrorMessage>
             </FormControl>
-            <Button type="submit" w="full" colorScheme="primaryNumbered">
+            <Button
+              disabled={loading}
+              type="submit"
+              w="full"
+              colorScheme="primaryNumbered"
+            >
               Enviar
             </Button>
           </Form>
