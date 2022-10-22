@@ -37,7 +37,8 @@ const Sobre = () => {
           bgGradient="linear(to-b, light.main, primary.light)"
         />
         <Grid
-          templateColumns="repeat(2, 1fr)"
+          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
+          templateRows={{ base: "repeat(2, auto)", md: "repeat(1, auto)" }}
           gap={8}
           position="relative"
           zIndex="1"
@@ -51,7 +52,11 @@ const Sobre = () => {
             transform: "translateX(-50%)",
           }}
         >
-          <GridItem w="full">
+          <GridItem
+            w="full"
+            order={{ base: 1, md: "-1" }}
+            px={{ base: 4, md: 0 }}
+          >
             <Heading color="primary.dark" mb={4}>
               Uma história antiga...
             </Heading>
@@ -75,14 +80,15 @@ const Sobre = () => {
         <Box
           w="1000vw"
           transform={"translateX(-50%)"}
-          h={{ base: "5vh", lg: "10vh" }}
+          h={"10vh"}
           bgGradient="linear(to-b, primary.light, secondary.light)"
         />
         <Grid
-          templateColumns="repeat(2, 1fr)"
           gap={8}
           position="relative"
           zIndex="1"
+          templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
+          templateRows={{ base: "repeat(2, auto)", md: "repeat(1, auto)" }}
           _before={{
             bg: "secondary.light",
             position: "absolute",
@@ -97,7 +103,7 @@ const Sobre = () => {
           <GridItem w="full">
             <Image src="/about-us-2.jpg" alt="sobre nos" />
           </GridItem>
-          <GridItem w="full">
+          <GridItem w="full" px={{ base: 4, md: 0 }}>
             <Heading color="secondary.dark" mb={4}>
               Produtos de Qualidade
             </Heading>
