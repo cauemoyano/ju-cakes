@@ -67,3 +67,14 @@ export const ProductSchema = Yup.object().shape({
 export const CategorySchema = Yup.object().shape({
   name: Yup.string().required("Nome é obrigatório"),
 });
+export const ContactSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, "Nome inválido")
+    .max(50, "Nome muito longo")
+    .required("Nome é obrigatório"),
+  email: Yup.string().email("Email inválido").required("Insira seu email"),
+  phone: Yup.string().matches(phoneRegExp, "Telefone inválido"),
+  message: Yup.string()
+    .min(3, "Mensagem muito curta")
+    .required("Mensagem é obrigatória"),
+});
