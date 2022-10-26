@@ -14,12 +14,20 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { attachProductsCategoriesToLinks } from "../../../../utilities/auxFunctions";
 import { MotionBox } from "../../../animation/MotionBox";
 import CustomLink from "../../../primitives/CustomLink";
 import { INavLink, Links, NavLink } from "./LinksBox";
 
 const MobileLinks = () => {
+  const [links, setLinks] = useState<INavLink[]>([]);
+  useEffect(() => {
+    (async () => {
+      const links = await attachProductsCategoriesToLinks(Links);
+      setLinks(links);
+    })();
+  }, []);
   return (
     <MotionBox
       display={{ md: "none" }}
@@ -48,7 +56,7 @@ const MobileLinks = () => {
           <Divider />
         </Center>
 
-        {Links.map((link) => (
+        {links.map((link) => (
           <MobileNavLink key={link.name} {...link} />
         ))}
       </Stack>
