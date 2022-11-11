@@ -80,8 +80,8 @@ export const NavLink = ({ name, path, sublinks }: INavLink) => {
   return (
     <Box>
       <Popover trigger={"hover"} placement={"bottom-start"}>
-        <PopoverTrigger>
-          {sublinks ? (
+        {sublinks ? (
+          <PopoverTrigger>
             <Box
               px={2}
               py={1}
@@ -92,19 +92,19 @@ export const NavLink = ({ name, path, sublinks }: INavLink) => {
             >
               {name}
             </Box>
-          ) : (
-            <CustomLink
-              px={2}
-              py={1}
-              _hover={{
-                textDecoration: "none",
-              }}
-              href={path ?? "#"}
-            >
-              {name}
-            </CustomLink>
-          )}
-        </PopoverTrigger>
+          </PopoverTrigger>
+        ) : (
+          <CustomLink
+            px={2}
+            py={1}
+            _hover={{
+              textDecoration: "none",
+            }}
+            href={path ?? "#"}
+          >
+            {name}
+          </CustomLink>
+        )}
 
         {sublinks && (
           <PopoverContent

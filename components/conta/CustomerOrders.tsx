@@ -12,7 +12,7 @@ const initialShowOrderDetails: { state: boolean; value: null | string } = {
 };
 
 const CustomerOrders = () => {
-  const { getAllOrders } = useOrders();
+  const { getAllCustomerOrders } = useOrders();
   const [orders, setOrders] = useState<OrderData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [showOrderDetails, setShowOrderDetails] = useState(
@@ -20,7 +20,7 @@ const CustomerOrders = () => {
   );
 
   useEffect(() => {
-    getAllOrders().then((res) => {
+    getAllCustomerOrders().then((res) => {
       setOrders(res);
       setLoading(false);
     });

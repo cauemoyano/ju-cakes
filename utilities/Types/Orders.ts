@@ -30,4 +30,5 @@ export type OrderData = Pick<Customer, "name" | "email" | "phone"> & {
   status?: string;
   createdAt?: FirebaseDate;
   createAt?: FirebaseDate;
+  deliveryStatus?: undefined | "pending" | "complete";
 };

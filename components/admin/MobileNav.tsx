@@ -23,18 +23,18 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   return (
     <Flex
-      ml={{ base: 0, md: 60 }}
+      ml={{ base: 0, lg: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
       bg={"white"}
       borderBottomWidth="1px"
       borderBottomColor={"gray.200"}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
+      justifyContent={{ base: "space-between", lg: "flex-end" }}
       {...rest}
     >
       <IconButton
-        display={{ base: "flex", md: "none" }}
+        display={{ base: "flex", lg: "none" }}
         onClick={onOpen}
         variant="outline"
         aria-label="open menu"
@@ -42,7 +42,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <Text
-        display={{ base: "flex", md: "none" }}
+        display={{ base: "flex", lg: "none" }}
         fontSize="2xl"
         fontFamily="monospace"
         fontWeight="bold"

@@ -1,4 +1,10 @@
-import { Box, Drawer, DrawerContent, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Drawer,
+  DrawerCloseButton,
+  DrawerContent,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useLayoutEffect, useMemo } from "react";
 import MobileNav from "../../components/admin/MobileNav";
@@ -29,22 +35,21 @@ const Admin = () => {
 
   const cmp = findSlugMatchingCmp()?.component;
 
-  if (!authorized) return null;
-
   const subPagesBox = useMemo(
     () => (
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box ml={{ base: 0, lg: 60 }} p="4">
         <CustomerProvider>{cmp}</CustomerProvider>
       </Box>
     ),
     [cmp]
   );
+  if (!authorized) return null;
 
   return (
     <Box minH="100vh" bg="light.main">
       <SidebarContent
         onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
+        display={{ base: "none", lg: "block" }}
       />
       <Drawer
         autoFocus={false}
@@ -53,9 +58,10 @@ const Admin = () => {
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size="full"
+        size={"xs"}
       >
         <DrawerContent>
+          <DrawerCloseButton />
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>

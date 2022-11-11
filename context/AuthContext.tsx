@@ -11,7 +11,14 @@ import {
   onIdTokenChanged,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { createContext, useContext, useState, useEffect, Context } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  Context,
+  useRef,
+} from "react";
 import { auth, db } from "../config/firebase";
 import { getDocument } from "../services/FirebaseStorageService/FirebaseStorageService";
 import useCheckout from "../services/useCheckout/useCheckout";
@@ -55,6 +62,7 @@ export const AuthUserProvider = ({
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const userFirstTimeRef = useRef(false);
 
   useEffect(() => {
     const unsubscribe = onIdTokenChanged(auth, (user) => {
@@ -82,11 +90,18 @@ export const AuthUserProvider = ({
       } else {
         setUser(null);
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!userFirstTimeRef.current) {
+      userFirstTimeRef.current = true;
+      return;
+    }
+    setLoading(false);
+  }, [user]);
 
   const signup = (email: string, password: string) => {
     return createUserWithEmailAndPassword(auth, email, password);

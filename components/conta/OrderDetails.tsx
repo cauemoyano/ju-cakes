@@ -22,7 +22,7 @@ type Props = {
   orders: OrderData[] | null;
 };
 
-const getOrderDetails = (id: string, orders: OrderData[]) => {
+export const getOrderDetails = (id: string, orders: OrderData[]) => {
   return orders.find((order) => order.id === id);
 };
 
@@ -102,7 +102,13 @@ const OrderDetails = (props: Props) => {
   );
 };
 
-const OrderItem = ({ name, price, quantity, variant, image }: CartItem) => {
+export const OrderItem = ({
+  name,
+  price,
+  quantity,
+  variant,
+  image,
+}: CartItem) => {
   return (
     <ListItem>
       <Flex align="center" gap={"4"}>

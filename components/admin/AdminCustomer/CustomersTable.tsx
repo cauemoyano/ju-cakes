@@ -45,7 +45,7 @@ const CustomersTable = () => {
             </Thead>
             <Tbody>
               {customers.map((customer) => (
-                <CustomerRow key={customer.uid} onOpen={onOpen} {...customer} />
+                <CustomerRow key={customer.id} onOpen={onOpen} {...customer} />
               ))}
             </Tbody>
           </Table>

@@ -17,7 +17,7 @@ import CustomLink from "../primitives/CustomLink";
 import AdminCalendar from "./AdminCalendar/AdminCalendar";
 import AdminCustomer from "./AdminCustomer/AdminCustomer";
 import AdminHome from "./AdminHome";
-import AdminOrders from "./AdminOrders";
+import AdminOrders from "./AdminOrders/AdminOrders";
 import AdminProducts from "./AdminProducts/AdminProducts";
 import AdminTestimonials from "./AdminTestimonials";
 
@@ -116,7 +116,7 @@ const NavItem = ({ icon, path, children, ...rest }: NavItemProps) => {
       href={path}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
-      active={{ color: "primary.dark" }}
+      _active={{ color: "primary.dark" }}
     >
       <Flex
         align="center"

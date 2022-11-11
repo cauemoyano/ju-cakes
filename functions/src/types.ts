@@ -31,11 +31,28 @@ export type Customer = {
   phone?: string;
 };
 
-export type OrderData = Customer & {
+type FirebaseDate = {
+  seconds?: number;
+  nanoseconds?: number;
+};
+
+export type OrderData = Pick<Customer, "name" | "email" | "phone"> & {
+  uid?: string;
+  id: string;
+  customerId: string;
   dateAndPeriod: {
     date: Date;
     period: string;
   };
   cart: CartItem[];
   paymentRate: string;
+  transaction_amount: number;
+  transaction_details: {
+    installment_amount: number;
+    total_paid_amount: number;
+  };
+  status?: string;
+  createdAt?: FirebaseDate;
+  createAt?: FirebaseDate;
+  deliveryStatus?: undefined | "pending" | "complete";
 };

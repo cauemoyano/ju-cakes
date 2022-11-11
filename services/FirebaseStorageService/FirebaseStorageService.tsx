@@ -21,9 +21,10 @@ export const updateUserEmail = (user: FirebaseUser, newEmail: string) => {
 export const updateDoc = (
   collectionName: string,
   id: string,
-  data: { [key: string]: any }
+  data: { [key: string]: any },
+  merge: boolean = false
 ) => {
-  return setDoc(doc(db, collectionName, id), data);
+  return setDoc(doc(db, collectionName, id), data, { merge });
 };
 export const createDoc = (
   collectionName: string,

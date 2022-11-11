@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { OrderData } from "../../utilities/Types/Orders";
 import {
+  getCollection,
   getDocsByQuery,
   getDocument,
 } from "../FirebaseStorageService/FirebaseStorageService";
@@ -19,7 +20,7 @@ const useOrders = () => {
       }
     });
 
-  const getAllOrders = async () => {
+  const getAllCustomerOrders = async () => {
     if (!user) return [];
 
     const orders = (await getDocsByQuery(
@@ -29,7 +30,8 @@ const useOrders = () => {
     )) as unknown;
     return orders as OrderData[];
   };
-  return { getOrder, getAllOrders };
+
+  return { getOrder, getAllCustomerOrders };
 };
 
 export default useOrders;
