@@ -39,7 +39,11 @@ const FilterBox = () => {
       boxShadow="md"
       flexDirection={"column"}
     >
-      <Flex gap={4} justify="space-between">
+      <Flex
+        gap={4}
+        justify="space-between"
+        direction={{ base: "column", md: "row" }}
+      >
         <FormControl mb={4}>
           <FormLabel htmlFor="query">Nome</FormLabel>
           <Input
@@ -67,10 +71,10 @@ const FilterBox = () => {
           </Select>
         </FormControl>
       </Flex>
-      <Flex gap={4}>
+      <Flex gap={4} direction={{ base: "column", md: "row" }}>
         <FormControl mb={4}>
           <FormLabel htmlFor="startDate">Datas</FormLabel>
-          <Flex>
+          <Flex direction={{ base: "column", md: "row" }}>
             <Input
               name="startDate"
               id="startDate"

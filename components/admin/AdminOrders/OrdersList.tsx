@@ -22,7 +22,7 @@ import OrdersTable from "./OrdersTable";
 
 const OrdersList = () => {
   return (
-    <Box bg="whiteAlpha.100" borderRadius={"md"} boxShadow="md">
+    <Box bg="whiteAlpha.100" borderRadius={"md"} boxShadow="md" w="full">
       {/* <OrdersTable /> */}
       <OrdersMobile />
     </Box>

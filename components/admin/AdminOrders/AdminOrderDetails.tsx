@@ -81,6 +81,7 @@ const AdminOrderDetails = (props: Props) => {
         bg="gray.50"
         p={4}
         borderRadius="md"
+        w="full"
       >
         <Box>
           <Text fontWeight="bold" mb={2}>

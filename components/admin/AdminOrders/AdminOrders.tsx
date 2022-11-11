@@ -27,7 +27,7 @@ const AdminOrders = () => {
     })();
   }, []);
   return (
-    <Container p={0}>
+    <Container maxWidth="container.lg" p={0}>
       <Heading as="h1" fontFamily="inter" mb={8} mt={{ base: 4, md: 8 }}>
         Pedidos
       </Heading>
