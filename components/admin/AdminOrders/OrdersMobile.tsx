@@ -12,7 +12,13 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { BsCashCoin, BsFillPersonFill, BsStack, BsTruck } from "react-icons/bs";
+import {
+  BsCartCheckFill,
+  BsCashCoin,
+  BsFillPersonFill,
+  BsStack,
+  BsTruck,
+} from "react-icons/bs";
 import { RiTruckFill } from "react-icons/ri";
 import useOrdersAdmin from "../../../services/useOrdersAdmin/useOrdersAdmin";
 import { OrderData } from "../../../utilities/Types/Orders";
@@ -20,7 +26,7 @@ import SimpleModal from "../../layout/modal/SimpleModal";
 import AdminOrderDetails from "./AdminOrderDetails";
 
 const OrdersMobile = () => {
-  const { orders } = useOrdersAdmin();
+  const { filteredOrders } = useOrdersAdmin();
   const [showOrderDetails, setShowOrderDetails] = useState<OrderData | null>(
     null
   );
@@ -31,7 +37,7 @@ const OrdersMobile = () => {
   return (
     <>
       <List>
-        {orders.map((order) => (
+        {filteredOrders.map((order) => (
           <OrdersMobileItem
             key={order.id}
             order={order}
@@ -60,7 +66,7 @@ const OrdersMobileItem = ({
   order: OrderData;
   setShowOrderDetails: (value: React.SetStateAction<OrderData | null>) => void;
 }) => {
-  const { name, dateAndPeriod, email, phone, deliveryStatus, cart } = order;
+  const { name, dateAndPeriod, email, phone, deliveryStatus, cart, id } = order;
   const deliveryDate = dateAndPeriod
     ? `${new Date(dateAndPeriod.date).toLocaleDateString("pt-BR")} - ${
         dateAndPeriod.period
@@ -77,6 +83,10 @@ const OrdersMobileItem = ({
       onClick={() => setShowOrderDetails(order)}
     >
       <VStack align="left" spacing={3}>
+        <Flex alignItems="center">
+          <Icon as={BsCartCheckFill} mr={2} fontSize="2xl" />
+          <Text>{id}</Text>
+        </Flex>
         <Flex alignItems="center">
           <Icon as={RiTruckFill} mr={2} fontSize="2xl" />
           <Text>{deliveryDate}</Text>

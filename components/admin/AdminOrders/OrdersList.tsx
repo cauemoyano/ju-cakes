@@ -11,20 +11,17 @@ import {
   Th,
   Thead,
   Tr,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import useOrdersAdmin from "../../../services/useOrdersAdmin/useOrdersAdmin";
-import { OrderData } from "../../../utilities/Types/Orders";
-import SimpleModal from "../../layout/modal/SimpleModal";
-import AdminOrderDetails from "./AdminOrderDetails";
 import OrdersMobile from "./OrdersMobile";
 import OrdersTable from "./OrdersTable";
 
 const OrdersList = () => {
+  const [isMdOrLarger] = useMediaQuery("(min-width: 768px)");
   return (
     <Box bg="whiteAlpha.100" borderRadius={"md"} boxShadow="md" w="full">
-      {/* <OrdersTable /> */}
-      <OrdersMobile />
+      {isMdOrLarger ? <OrdersTable /> : <OrdersMobile />}
     </Box>
   );
 };

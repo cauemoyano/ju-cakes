@@ -6,15 +6,25 @@ import useOrders from "../../../services/useOrders/useOrders";
 import useOrdersAdmin from "../../../services/useOrdersAdmin/useOrdersAdmin";
 import { OrderData } from "../../../utilities/Types/Orders";
 
+export const initialFilterState = {
+  query: "",
+  status: "all",
+  startDate: "",
+  endDate: "",
+  sort: "deliveryDate",
+};
 export type TOrdersAdminContext = {
   orders: OrderData[];
   setOrders: React.Dispatch<React.SetStateAction<OrderData[]>>;
+  filter: typeof initialFilterState;
+  setFilter: React.Dispatch<React.SetStateAction<typeof initialFilterState>>;
 };
 
 export const OrdersAdminContext = createContext<TOrdersAdminContext | {}>({});
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState<TOrdersAdminContext["orders"]>([]);
+  const [filter, setFilter] = useState(initialFilterState);
   const { getAllOrders } = useOrdersAdmin();
   useEffect(() => {
     (async () => {
@@ -31,7 +41,9 @@ const AdminOrders = () => {
       <Heading as="h1" fontFamily="inter" mb={8} mt={{ base: 4, md: 8 }}>
         Pedidos
       </Heading>
-      <OrdersAdminContext.Provider value={{ orders, setOrders }}>
+      <OrdersAdminContext.Provider
+        value={{ orders, setOrders, filter, setFilter }}
+      >
         <VStack spacing={5}>
           <FilterBox />
           <OrdersList />

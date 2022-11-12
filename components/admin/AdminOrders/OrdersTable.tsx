@@ -18,7 +18,7 @@ import SimpleModal from "../../layout/modal/SimpleModal";
 import AdminOrderDetails from "./AdminOrderDetails";
 
 const OrdersTable = () => {
-  const { orders } = useOrdersAdmin();
+  const { filteredOrders } = useOrdersAdmin();
   const [showOrderDetails, setShowOrderDetails] = useState<OrderData | null>(
     null
   );
@@ -37,26 +37,28 @@ const OrdersTable = () => {
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th fontFamily="inter" fontSize="sm">
+              <Th px={2} fontFamily="inter" fontSize="sm">
+                ORDEM
+              </Th>
+              <Th px={2} fontFamily="inter" fontSize="sm">
                 Data de entrega
               </Th>
-              <Th fontFamily="inter" fontSize="sm">
+              <Th px={2} fontFamily="inter" fontSize="sm">
                 Nome
               </Th>
-              <Th fontFamily="inter" fontSize="sm">
+              <Th px={2} textAlign="center" fontFamily="inter" fontSize="sm">
                 Items
               </Th>
-              <Th fontFamily="inter" fontSize="sm">
+              <Th px={2} textAlign="center" fontFamily="inter" fontSize="sm">
                 Valor (R$)
               </Th>
-              <Th fontFamily="inter" fontSize="sm">
+              <Th px={2} fontFamily="inter" fontSize="sm">
                 Status
               </Th>
-              <Th fontFamily="inter" fontSize="sm"></Th>
             </Tr>
           </Thead>
           <Tbody>
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <OrderTableItem
                 key={order.id}
                 order={order}
@@ -87,7 +89,7 @@ const OrderTableItem = ({
   order: OrderData;
   setShowOrderDetails: (value: React.SetStateAction<OrderData | null>) => void;
 }) => {
-  const { name, dateAndPeriod, email, phone, deliveryStatus, cart } = order;
+  const { name, dateAndPeriod, email, phone, deliveryStatus, cart, id } = order;
   const deliveryDate = dateAndPeriod
     ? `${new Date(dateAndPeriod.date).toLocaleDateString("pt-BR")} - ${
         dateAndPeriod.period
@@ -101,22 +103,28 @@ const OrderTableItem = ({
       transition="all 0.5s"
       _hover={{ backgroundColor: "primary.light" }}
     >
-      <Td>{deliveryDate}</Td>
-      <Td maxWidth="150px" textOverflow={"ellipsis"} overflow="hidden">
+      <Td px={2} w="fit-content">
+        {id}
+      </Td>
+      <Td px={2} w="fit-content">
+        {deliveryDate}
+      </Td>
+      <Td px={2} maxWidth="150px" textOverflow={"ellipsis"} overflow="hidden">
         {name}
       </Td>
-      <Td isNumeric>{getCartItemsQty(cart)}</Td>
-      <Td isNumeric>{getCartAmount(cart)}</Td>
-      <Td>
+      <Td px={2} textAlign="center">
+        {getCartItemsQty(cart)}
+      </Td>
+      <Td px={2} textAlign="center">
+        {getCartAmount(cart)}
+      </Td>
+      <Td px={2}>
         <Tag
           colorScheme={deliveryStatus === "complete" ? "green" : "red"}
           borderRadius="full"
         >
           {deliveryStatus === "complete" ? "Confirmado" : "Pendente"}
         </Tag>
-      </Td>
-      <Td color="primary.dark">
-        <Search2Icon />
       </Td>
     </Tr>
   );
